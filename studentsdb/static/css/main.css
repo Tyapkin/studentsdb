@@ -25,3 +25,24 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 30px;
     color: #555;
 }
+
+/* Custom styles */
+
+.add-btn {
+    margin-top: 18px;
+}
+
+.month-flipper {
+    text-align: center;
+    margin: 10px 0;
+}
+
+#btn-block .col-xs-8 {
+    background-color: #f2f2f2;
+    border-top: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.col-xs-8 button {
+    margin: 10px 10px 10px 26%;
+}
