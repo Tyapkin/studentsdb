@@ -43,6 +43,7 @@ def students_list(request):
             'image': 'img/Fry.jpg'
         }
     )
+    print request
     return render(request, 'students/students_list.html',
                   {'students': students})
 
