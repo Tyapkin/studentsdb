@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.template import RequestContext, loader
@@ -19,7 +20,31 @@ from django.template import RequestContext, loader
 
 # Views for students
 def students_list(request):
-    return render(request, 'students/students_list.html', {})
+    students = (
+        {
+            'id': 1,
+            'first_name': u'Олександр',
+            'last_name': u'Тяпкін',
+            'ticket': u'030',
+            'image': 'img/me.jpg'
+        },
+        {
+            'id': 2,
+            'first_name': u'Бендер',
+            'last_name': u'Родрігес',
+            'ticket': u'010',
+            'image': 'img/Bender.jpg'
+        },
+        {
+            'id': 3,
+            'first_name': u'Філліп',
+            'last_name': u'Фрай',
+            'ticket': u'011',
+            'image': 'img/Fry.jpg'
+        }
+    )
+    return render(request, 'students/students_list.html',
+                  {'students': students})
 
 
 def students_add(request):
