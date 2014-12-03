@@ -1,0 +1,89 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html lang="uk">
+
+  <head>
+    <meta charset="utf-8" />
+    <title>Сервіс Обліку Студентів - {% block meta_title %}{% endblock %}</title>
+    <meta name="description" value="Система Обліку Студентів Навчального Закладу" />
+
+    <!-- include styles -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+    {% block extra_css %}{% endblock %}
+  </head>
+
+  <body>
+
+    <!-- container -->
+    <div class="container">
+
+      <!-- header section -->
+      <div class="row" id="header">
+        <!-- logo -->
+        <div class="col-xs-8"><h1>Сервіс обліку студентів</h1></div>
+        <!-- selector -->
+        <div class="col-xs-4" id="group-selector">
+          <strong>Групи:</strong>
+          <select>
+            <option value="">Усі групи</option>
+            <option value="">5зКСМ - 14, Тяпкін Олександр (№ 030)</option>
+            <option value="">3зПР - 17, Тяпкын Олександр (№ 010)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- subheader -->
+      <div class="row" id="sub-header">
+        <div class="col-xs-12">
+          <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="{% url "home" %}">Студенти</a></li>
+            <li role="presentation"><a href="/journal">Відвідування</a></li>
+            <li role="presentation"><a href="{% url "groups" %}">Групи</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- main page content -->
+      <div class="row" id="content-columns">
+        <div class="col-xs-12" id="content-column">
+          <!-- message section -->
+          {% comment "Not user block so far" %}
+          <div class="alert alert-warning">Зміни скасовано.</div>
+          {% endcomment %}
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="row">
+                <div class="col-xs-8 col-sm-8">
+                  <h2>{% block title %}{% endblock %}</h2>
+                </div>
+                <div class="col-xs-4 col-sm-4">
+                  {% block action_btn %}{% endblock %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% block content %}{% endblock %}
+
+        </div>
+      </div>
+
+      <!-- footer -->
+      <div class="row" id="footer">
+        <div class="col-xs-12">
+          &copy; 2014 Сервіс обліку студентів.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- JS section -->
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    {% block extra_js %}{% endblock %}
+
+  </body>
+
+</html>
