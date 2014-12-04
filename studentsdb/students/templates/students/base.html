@@ -2,73 +2,71 @@
 <!DOCTYPE html>
 <html lang="uk">
 
-  <head>
-    <meta charset="utf-8" />
-    <title>Сервіс Обліку Студентів - {% block meta_title %}{% endblock %}</title>
-    <meta name="description" value="Система Обліку Студентів Навчального Закладу" />
+<head>
+  <meta charset="utf-8" />
+  <title>Сервіс Обліку Студентів - {% block meta_title %}{% endblock %}</title>
+  <meta name="description" value="Система Обліку Студентів Навчального Закладу" />
+  <!-- include styles -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ PORTAL_URL }}{% static "css/main.css" %}">
+  {% block extra_css %}{% endblock %}
+</head>
 
-    <!-- include styles -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ PORTAL_URL }}{% static "css/main.css" %}">
-    {% block extra_css %}{% endblock %}
-  </head>
+<body>
 
-  <body>
+  <!-- Section container -->
+  <div class="container">
 
-    <!-- Section container -->
-    <div class="container">
+    <!-- Section header -->
+    {% block header %}{% endblock %}
+    <!-- End section header -->
 
-      <!-- Section header -->
-      {% block header %}{% endblock %}
-      <!-- End section header -->
+    <!-- Section sub-header -->
+    {% block subheader %}{% endblock %}
+    <!-- End section sub-header -->
 
-      <!-- Section sub-header -->
-      {% block subheader %}{% endblock %}
-      <!-- End section sub-header -->
+    <!-- Section main page content -->
+    <div class="row" id="content-columns">
+      <div class="col-xs-12" id="content-column">
 
-      <!-- Section main page content -->
-      <div class="row" id="content-columns">
-        <div class="col-xs-12" id="content-column">
-          <!-- Section message -->
-          {% comment "Not user block so far" %}
-          <div class="alert alert-warning">Зміни скасовано.</div>
-          {% endcomment %}
-          <!-- End section message -->
+        <!-- Section message -->
+        {% comment "Not user block so far" %}
+        <div class="alert alert-warning">Зміни скасовано.</div>
+        {% endcomment %}
+        <!-- End section message -->
 
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="row">
-                <div class="col-xs-8 col-sm-8">
-                  <h2>{% block title %}{% endblock %}</h2>
-                </div>
-                <div class="col-xs-4 col-sm-4">
-                  {% block action_btn %}{% endblock %}
-                </div>
-              </div>
+        <!-- Section title and button -->
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-xs-8 col-sm-8"><h2>{% block title %}{% endblock %}</h2></div>
+              <div class="col-xs-4 col-sm-4">{% block action_btn %}{% endblock %}</div>
             </div>
           </div>
-
-          {% block content %}{% endblock %}
-          <!-- Section pagination -->
-          {% block pagination %}{% endblock %}
-          <!-- End section pagination -->
-
         </div>
+
+        {% block content %}{% endblock %}
+
+        <!-- Section pagination -->
+        {% block pagination %}{% endblock %}
+        <!-- End section pagination -->
+
       </div>
-      <!-- End section main page content -->
-
-      <!-- Section footer -->
-      {% block footer %}{% endblock %}
-      <!-- End section footer -->
-
     </div>
-    <!-- End section container -->
+    <!-- End section main page content -->
 
-    <!-- JS section -->
-    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    {% block extra_js %}{% endblock %}
+    <!-- Section footer -->
+    {% block footer %}{% endblock %}
+    <!-- End section footer -->
 
-  </body>
+  </div>
+  <!-- End section container -->
+
+  <!-- JS section -->
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  {% block extra_js %}{% endblock %}
+
+</body>
 
 </html>
