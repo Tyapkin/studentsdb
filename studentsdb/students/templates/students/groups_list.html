@@ -1,4 +1,4 @@
-{% extends "students/base.html" %}
+{% extends "students/base_elements.html" %}
 
 {% load static from staticfiles %}
 
@@ -9,8 +9,6 @@
 {% block action_btn %}<a href="{% url "groups_add" %}" class="btn btn-primary add-btn">Додати групу</a>{% endblock %}
 
 {% block content %}
-          <div>
-
             <table class="table table-hover table-striped">
               <thead>
                 <tr>
@@ -92,16 +90,4 @@
                 </tr>
               </tbody>
             </table>
-            <nav>
-              <ul class="pagination">
-                <li><a href="#"><span aria-hidden="true">&laquo;</span>
-                  <span class="sr-only">Попередня</span></a></li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#"><span aria-hidden="true">&raquo;</span>
-                  <span class="sr-only">Наступна</span></a></li>
-              </ul>
-            </nav>
-
-          </div>
 {% endblock %}
