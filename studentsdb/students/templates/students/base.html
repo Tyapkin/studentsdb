@@ -9,7 +9,7 @@
   <!-- include styles -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="{{ PORTAL_URL }}{% static "css/main.css" %}">
-  {% block extra_css %}{% endblock %}
+  {% block extra_css %}{{ site_path }}{% endblock %}
 </head>
 
 <body>
