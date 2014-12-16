@@ -26,6 +26,12 @@ class Student(models.Model):
         blank=True,
         verbose_name=u'Фото',
         null=True)
+    student_group = models.ForeignKey(
+        'Group',
+        blank=False,
+        null=True,
+        on_delete=models.PROTECT,
+        verbose_name=u'Група')
     ticket = models.CharField(
         max_length=20,
         blank=False,
