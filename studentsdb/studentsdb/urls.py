@@ -22,6 +22,13 @@ urlpatterns = patterns(
         'students.views.groups.groups_delete', name='groups_delete'),
     # URL pattern for journal
     url(r'^journal/$', 'students.views.journal.journal', name='journal'),
+    # URL pattern for exam
+    url(r'^exams/$', 'students.views.exams.exams_list', name='exams'),
+    url(r'^exams/add/$', 'students.views.exams.add_exam', name='add_exam'),
+    url(r'^exams/(?P<eid>\d+)/delete/$',
+        'students.views.exams.delete_exam', name='delete_exam'),
+    url(r'^exams/(?P<eid>\d+)/edit/$',
+        'students.views.exams.edit_exam', name='edit_exam'),
 
     url(r'^admin/', include(admin.site.urls)),
 )
