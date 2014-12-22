@@ -40,3 +40,7 @@ def edit_exam(request, eid):
 
 def delete_exam(request, eid):
     pass
+
+
+def exam_results(request, eid):
+    pass

@@ -36,3 +36,9 @@ class Exam(models.Model):
             return '%s (%s)' % (self.exam_name, self.teacher)
         else:
             return '%s' % self.exam_name
+
+
+class ExamResults(models.Model):
+    """Exam results model"""
+
+    pass

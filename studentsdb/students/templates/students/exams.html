@@ -62,7 +62,7 @@
   {% for exam in exams %}
     <tr>
       <td>{{ forloop.counter }}</td>
-      <td><a href="{% url "edit_exam" exam.id %}" title="редагувати">{{ exam.exam_name }}</a></td>
+      <td><a href="{% url "exam_results" exam.id %}" title="результати">{{ exam.exam_name }}</a></td>
       <td>{{ exam.teacher }}</td>
       <td><a href="{% url "groups_edit" exam.exam_group_id %}" title="редагувати">{{ exam.exam_group.title }}</a></td>
       <td>{{ exam.date_exam|date:"d/m/Y - g:i A" }}</td>
