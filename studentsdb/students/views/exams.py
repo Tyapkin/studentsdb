@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404, HttpResponse
 
-from ..models.exams import Exam
+from ..models.exams import Exam, ExamResults
 
 
 def exams_list(request):
@@ -43,4 +45,12 @@ def delete_exam(request, eid):
 
 
 def exam_results(request, eid):
-    pass
+    try:
+        results = ExamResults.objects.filter(pk=eid)
+    except ObjectDoesNotExist:
+        raise Http404
+
+    #for r in results:
+    #    print '%s | %s - %s' % (r.exam.exam_name, r.student, r.get_grade_display())
+
+    return HttpResponse('Ok')
