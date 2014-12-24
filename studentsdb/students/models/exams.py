@@ -42,18 +42,19 @@ class ExamResults(models.Model):
     """Exam results model"""
 
     GRADE_LIST = (
-        # Grades 'A, B, C, D, E, F'
-        ('0', 'F'), ('1', 'E'), ('2', 'D'), ('3', 'C'), ('4', 'B'), ('5', 'A'),
+        # Grades 'A, B, C, D, E, F' and default value 'No grade'
+        ('-1', 'No grade'), ('0', 'F'), ('1', 'E'),
+        ('2', 'D'), ('3', 'C'), ('4', 'B'), ('5', 'A'),
     )
 
     exam = models.ForeignKey('Exam', blank=False, null=True,
-                             on_delete=models.SET_NULL, verbose_name=u'Іспит')
+                             on_delete=models.PROTECT, verbose_name=u'Іспит')
 
     student = models.ForeignKey('Student', blank=True, null=True,
                                 verbose_name=u'Студент')
 
-    grade = models.CharField(max_length=1, choices=GRADE_LIST,
-                             default='5',
+    grade = models.CharField(max_length=2, choices=GRADE_LIST,
+                             default='-1',
                              verbose_name=u'Оцінка')
 
     class Meta(object):
@@ -62,4 +63,8 @@ class ExamResults(models.Model):
         unique_together = ('exam', 'student')
 
     def __unicode__(self):
-        return '%s' % self.exam.exam_name
+
+        if self.exam.exam_name and self.student:
+            return '%s - %s' % (self.exam.exam_name, self.student)
+        else:
+            return 'Not found exam or student'

@@ -45,12 +45,15 @@ def delete_exam(request, eid):
 
 
 def exam_results(request, eid):
+    # Переделать эту вьюху нахрен. Логика х*#$ня, выводит результаты совсем не
+    # что ожидаешь.
+
     try:
         results = ExamResults.objects.filter(pk=eid)
     except ObjectDoesNotExist:
         raise Http404
 
-    #for r in results:
-    #    print '%s | %s - %s' % (r.exam.exam_name, r.student, r.get_grade_display())
+    for r in results:
+        print '%s | %s - %s' % (r.exam.exam_name, r.student, r.get_grade_display())
 
     return HttpResponse('Ok')
