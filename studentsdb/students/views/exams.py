@@ -19,7 +19,7 @@ def exams_list(request):
         if request.GET.get('reverse', '') == '1':
             exams = exams.reverse()
 
-    paginator = Paginator(exams, 3)
+    paginator = Paginator(exams, 5)
     page = request.GET.get('page')
 
     try:
@@ -33,27 +33,40 @@ def exams_list(request):
 
 
 def add_exam(request):
-    pass
+    return HttpResponse('<h1>Add exam</h1>')
 
 
 def edit_exam(request, eid):
-    pass
+    return HttpResponse('<h1>Edit exam %s</h1>' % eid)
 
 
 def delete_exam(request, eid):
-    pass
+    return HttpResponse('<h1>Delete exam %s</h1>' % eid)
 
 
 def exam_results(request, eid):
-    # Переделать эту вьюху нахрен. Логика х*#$ня, выводит результаты совсем не
-    # что ожидаешь.
 
     try:
-        results = ExamResults.objects.filter(pk=eid)
+        results = ExamResults.objects.filter(exam_id=eid)
     except ObjectDoesNotExist:
         raise Http404
 
-    for r in results:
-        print '%s | %s - %s' % (r.exam.exam_name, r.student, r.get_grade_display())
+    # try to order students list
+    order_by = request.GET.get('order_by', '')
 
-    return HttpResponse('Ok')
+    if order_by in ('exam_name', 'student', 'grade'):
+        results = results.order_by(order_by)
+
+        if request.GET.get('reverse', '') == '1':
+            results = results.reverse()
+
+    return render(request, 'students/exam_results.html',
+                  {'results': results})
+
+
+def delete_exam_result(request, rid):
+    return HttpResponse('<h1>Delete exam %s result</h1>' % rid)
+
+
+def edit_exam_result(request, rid):
+    return HttpResponse('<h1>Edit exam %s result</h1>' % rid)

@@ -1,0 +1,42 @@
+{% extends "students/base_elements.html" %}
+
+{% load static from staticfiles %}
+
+{% block meta_title %}Результати іспиту{% endblock %}
+
+{% block title %}Результати іспиту{% endblock %}
+
+{% block action_btn %}<a href="{% url "exams" %}" title="до списку іспитів" class="btn btn-primary add-btn">Назад</a>{% endblock %}
+
+{% block content %}
+<table class="table table-hover table-striped">
+  <thead>
+    <tr>
+      <th>№</th>
+      <th>Студент</th>
+      <th>Оцінка</th>
+      <th>Дії</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for r in results %}
+    <tr>
+      <td>{{ forloop.counter }}</td>
+      <td><a href="{% url "students_edit" r.student_id %}">{{ r.student }}</a></td>
+      <td>{{ r.get_grade_display }}</td>
+      <td>
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">Дія
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "edit_exam_result" r.id %}">Редагувати</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "delete_exam_result" r.id %}">Видалити</a></li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
