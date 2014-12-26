@@ -36,20 +36,26 @@ def add_exam(request):
     return HttpResponse('<h1>Add exam</h1>')
 
 
-def edit_exam(request, eid):
-    return HttpResponse('<h1>Edit exam %s</h1>' % eid)
+def edit_exam(request, id):
+    return HttpResponse('<h1>Edit exam %s</h1>' % id)
 
 
-def delete_exam(request, eid):
-    return HttpResponse('<h1>Delete exam %s</h1>' % eid)
+def delete_exam(request, id):
+    return HttpResponse('<h1>Delete exam %s</h1>' % id)
 
 
-def exam_results(request, eid):
+def exam_results(request, id):
+
+    meta_data = {}
 
     try:
-        results = ExamResults.objects.filter(exam_id=eid)
+        results = ExamResults.objects.filter(exam_id=id)
     except ObjectDoesNotExist:
         raise Http404
+
+    # meta_data is a dictionary wich contains group name and exam name
+    meta_data['exam_name'] = results[0].exam.exam_name
+    meta_data['group_name'] = results[0].exam.exam_group.title
 
     # try to order students list
     order_by = request.GET.get('order_by', '')
@@ -61,12 +67,12 @@ def exam_results(request, eid):
             results = results.reverse()
 
     return render(request, 'students/exam_results.html',
-                  {'results': results})
+                  {'results': results, 'meta_data': meta_data})
 
 
-def delete_exam_result(request, rid):
-    return HttpResponse('<h1>Delete exam %s result</h1>' % rid)
+def delete_exam_result(request, id):
+    return HttpResponse('<h1>Delete exam %s result</h1>' % id)
 
 
-def edit_exam_result(request, rid):
-    return HttpResponse('<h1>Edit exam %s result</h1>' % rid)
+def edit_exam_result(request, id):
+    return HttpResponse('<h1>Edit exam %s result</h1>' % id)

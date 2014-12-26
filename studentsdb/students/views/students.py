@@ -40,9 +40,9 @@ def students_add(request):
     return HttpResponse('<h1>Add form students</h1>')
 
 
-def students_edit(request, sid):
-    return HttpResponse('<h1>Student %s edit</h1>' % sid)
+def students_edit(request, id):
+    return HttpResponse('<h1>Student %s edit</h1>' % id)
 
 
-def students_delete(request, sid):
-    return HttpResponse('<h1>Student %s delete</h1>' % sid)
+def students_delete(request, id):
+    return HttpResponse('<h1>Student %s delete</h1>' % id)
