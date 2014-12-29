@@ -15,7 +15,7 @@
     <tr>
       <th>№</th>
       <th>Фото</th>
-      <th><a href="{% url "home" %}{% if not order_by and not reverse %}?order_by=last_name&amp;reverse=1{% else %}?order_by=last_name{% endif %}">
+      <th><a href="{% url "home" %}{% if not reverse %}?order_by=last_name&amp;reverse=1{% else %}?order_by=last_name{% endif %}">
             Прізвище
             {% if not order_by and not reverse %}&uarr;
             {% elif order_by == 'last_name' and reverse != '1' %}&uarr;
