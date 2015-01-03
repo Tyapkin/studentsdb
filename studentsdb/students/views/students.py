@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -50,21 +51,61 @@ def students_add(request):
             # Перевіряємо дані на коректність та збираємо помилки
             errors = {}
 
+            # validate student data will go here
+            data = {'middle_name': request.POST.get('middle_name'),
+                    'notes': request.POST.get('notes')}
+
+            # validate user input
+            first_name = request.POST.get('first_name', '').strip()
+            if not first_name:
+                errors['first_name'] = u'Ім’я є обов’язковим'
+            else:
+                data['first_name'] = first_name
+
+            last_name = request.POST.get('last_name', '').strip()
+            if not last_name:
+                errors['last_name'] = u'Прізвище є обов’язковим'
+            else:
+                data['last_name'] = last_name
+
+            birthday = request.POST.get('birthday', '').strip()
+            if not birthday:
+                errors['birthday'] = u'Дата нородження є обов’язковою'
+            else:
+                try:
+                    datetime.strptime(birthday, '%Y-%m-%d')
+                except Exception:
+                    errors['birthday'] = u'Введіть корректний формат дати' \
+                                         u'(напр. 1984-12-30)'
+                else:
+                    data['birthday'] = birthday
+
+            ticket = request.POST.get('ticket', '').strip()
+            if not ticket:
+                errors['ticket'] = u'Номер білета є обов’язковим'
+            else:
+                data['ticket'] = ticket
+
+            student_group = request.POST.get('student_group', '').strip()
+            if not student_group:
+                errors['student_group'] = u'Оберіть групу для студента'
+            else:
+                groups = Group.objects.filter(pk=student_group)
+                if len(groups) != 1:
+                    errors['student_group'] = u'Оберіть корректну групу'
+                else:
+                    data['student_group'] = Group.objects.get(pk=student_group)
+
+            photo = request.FILES.get('photo')
+            if photo:
+                data['photo'] = photo
+
             if not errors:
             # Якщо дані були введені некоректно:
                  # Віддаємо форму разом із знайденими помилками
             # Якщо дані були введенні коректно:
                 # Створюємо та зберігаємо студента в базу
-                student = Student(
-                    first_name=request.POST['first_name'],
-                    last_name=request.POST['last_name'],
-                    middle_name=request.POST['middle_name'],
-                    birthday=request.POST['birthday'],
-                    ticket=request.POST['ticket'],
-                    student_group=
-                        Group.objects.get(pk=request.POST['student_group']),
-                    photo=request.FILES['photo'],
-                )
+                student = Student(**data)
                 student.save()
                 # Поретаємо користувача до списку студентів
                 return HttpResponseRedirect(reverse('home'))
