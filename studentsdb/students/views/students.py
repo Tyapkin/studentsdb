@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from PIL import Image
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -42,10 +43,9 @@ def students_list(request):
 
 
 def students_add(request):
+    groups = Group.objects.all().order_by('title')
     # Якщо форма була запощена:
     if request.method == 'POST':
-        # Якщо кнопка Скасувати була натиснута:
-            # Повертаємо користувача до списку студентів
         # Якщо кнопка Додати була натиснута:
         if request.POST.get('add_button') is not None:
             # Перевіряємо дані на коректність та збираємо помилки
@@ -96,14 +96,27 @@ def students_add(request):
                 else:
                     data['student_group'] = Group.objects.get(pk=student_group)
 
-            photo = request.FILES.get('photo')
-            if photo:
-                data['photo'] = photo
+            # Validate image field
+            try:
+                photo = Image.open(request.FILES.get('photo'))
+            except IOError:
+                errors['photo'] = u'Не вдалося відкрити файл'
+                return render(request, 'students/students_add.html',
+                    {'groups': groups,
+                     'errors': errors})
+
+            # Підстраховка
+            if not Image.isImageType(photo):
+                errors['photo'] = u'Файл не відповідає жодному типу зображення'
+            elif request.FILES.get('photo').size > (1024**2) * 2:
+                errors['photo'] = u'Зображення більше ніж 2 Мб'
+            else:
+                data['photo'] = request.FILES.get('photo')
 
             if not errors:
-            # Якщо дані були введені некоректно:
+                 # Якщо дані були введені некоректно:
                  # Віддаємо форму разом із знайденими помилками
-            # Якщо дані були введенні коректно:
+                # Якщо дані були введенні коректно:
                 # Створюємо та зберігаємо студента в базу
                 student = Student(**data)
                 student.save()
@@ -111,14 +124,15 @@ def students_add(request):
                 return HttpResponseRedirect(reverse('home'))
             else:
                 return render(request, 'students/students_add.html',
-                    {'groups': Group.objects.all().order_by('title'),
+                    {'groups': groups,
                      'errors': errors})
+        # Якщо кнопка Скасувати була натиснута:
         elif request.POST.get('cancel_button') is not None:
+            # Повертаємо користувача до списку студентів
             return HttpResponseRedirect(reverse('home'))
-    # Якщо форма не була запощена:
     else:
+        # Якщо форма не була запощена:
         # Поертаємо код початково стану форми
-        groups = Group.objects.all().order_by('title')
         return render(request, 'students/students_add.html', {'groups': groups})
 
 
