@@ -121,7 +121,9 @@ def students_add(request):
                 student = Student(**data)
                 student.save()
                 # Поретаємо користувача до списку студентів
-                return HttpResponseRedirect(reverse('home'))
+                return HttpResponseRedirect(
+                    u'%s?status_message=Студента успішно додано!'
+                    % reverse('home'))
             else:
                 return render(request, 'students/students_add.html',
                     {'groups': groups,
@@ -129,7 +131,9 @@ def students_add(request):
         # Якщо кнопка Скасувати була натиснута:
         elif request.POST.get('cancel_button') is not None:
             # Повертаємо користувача до списку студентів
-            return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(
+                u'%s?status_message=Додавання студента скасовано'
+                % reverse('home'))
     else:
         # Якщо форма не була запощена:
         # Поертаємо код початково стану форми
