@@ -31,9 +31,9 @@
 
         <!-- Section message -->
         {% block status_message %}
-        {% if request.GET.status_message %}
-        <div class="alert alert-warning">{{ request.GET.status_message }}</div>
-        {% endif %}
+          {% if messages %}
+            {% for message in messages %}<div class="alert alert-warning">{{ message }}</div>{% endfor %}
+          {% endif %}
         {% endblock %}
         <!-- End section message -->
 

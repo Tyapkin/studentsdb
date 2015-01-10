@@ -2,6 +2,7 @@
 from datetime import datetime
 from PIL import Image
 from django.shortcuts import render
+from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -44,12 +45,15 @@ def students_list(request):
 
 def students_add(request):
     groups = Group.objects.all().order_by('title')
+    # messages strings
+    success_added_student = u'Студента %s %s успішно додано!'
+    cancel_form = u'Додавання студента скасовано.'
     # Якщо форма була запощена:
     if request.method == 'POST':
         # Якщо кнопка Додати була натиснута:
         if request.POST.get('add_button') is not None:
             # Перевіряємо дані на коректність та збираємо помилки
-            errors = {}
+            errors = False
 
             # validate student data will go here
             data = {'middle_name': request.POST.get('middle_name'),
@@ -58,41 +62,55 @@ def students_add(request):
             # validate user input
             first_name = request.POST.get('first_name', '').strip()
             if not first_name:
-                errors['first_name'] = u'Ім’я є обов’язковим'
+                #errors['first_name'] = u'Ім’я є обов’язковим'
+                messages.add_message(request, messages.WARNING, u'Ім’я є обов’язковим', extra_tags='first_name')
+                errors += 1
             else:
                 data['first_name'] = first_name
 
             last_name = request.POST.get('last_name', '').strip()
             if not last_name:
-                errors['last_name'] = u'Прізвище є обов’язковим'
+                #errors['last_name'] = u'Прізвище є обов’язковим'
+                messages.add_message(request, messages.WARNING, u'Прізвище є обов’зковим', extra_tags='last_name')
+                errors += 1
             else:
                 data['last_name'] = last_name
 
             birthday = request.POST.get('birthday', '').strip()
             if not birthday:
-                errors['birthday'] = u'Дата нородження є обов’язковою'
+                #errors['birthday'] = u'Дата нородження є обов’язковою'
+                messages.add_message(request, messages.WARNING, u'Дата нородження є обов’язковою', extra_tags='birthday')
+                errors += 1
             else:
                 try:
                     datetime.strptime(birthday, '%Y-%m-%d')
                 except Exception:
-                    errors['birthday'] = u'Введіть корректний формат дати' \
-                                         u'(напр. 1984-12-30)'
+                    #errors['birthday'] = u'Введіть корректний формат дати' \
+                    #                     u'(напр. 1984-12-30)'
+                    messages.add_message(request, messages.WARNING, u'Введіть корректний формат дати (напр. 1984-12-30)', extra_tags='birthday')
+                    errors += 1
                 else:
                     data['birthday'] = birthday
 
             ticket = request.POST.get('ticket', '').strip()
             if not ticket:
-                errors['ticket'] = u'Номер білета є обов’язковим'
+                #errors['ticket'] = u'Номер білета є обов’язковим'
+                messages.add_message(request, messages.WARNING, u'Номер білета є обов’язковим', extra_tags='ticket')
+                errors += 1
             else:
                 data['ticket'] = ticket
 
             student_group = request.POST.get('student_group', '').strip()
             if not student_group:
-                errors['student_group'] = u'Оберіть групу для студента'
+                #errors['student_group'] = u'Оберіть групу для студента'
+                messages.add_message(request, messages.WARNING, u'Оберіть групу для студента', extra_tags='student_group')
+                errors += 1
             else:
                 groups = Group.objects.filter(pk=student_group)
                 if len(groups) != 1:
-                    errors['student_group'] = u'Оберіть корректну групу'
+                    #errors['student_group'] = u'Оберіть корректну групу'
+                    messages.add_message(request, messages.WARNING, u'Оберіть корректну групу', extra_tags='student_group')
+                    errors += 1
                 else:
                     data['student_group'] = Group.objects.get(pk=student_group)
 
@@ -100,16 +118,21 @@ def students_add(request):
             try:
                 photo = Image.open(request.FILES.get('photo'))
             except IOError:
-                errors['photo'] = u'Не вдалося відкрити файл'
+                #errors['photo'] = u'Не вдалося відкрити файл'
+                messages.add_message(request, messages.WARNING, u'Не вдалося відкрити файл', extra_tags='photo')
+                errors += 1
                 return render(request, 'students/students_add.html',
-                    {'groups': groups,
-                     'errors': errors})
+                    {'groups': groups})
 
             # Підстраховка
             if not Image.isImageType(photo):
-                errors['photo'] = u'Файл не відповідає жодному типу зображення'
+                #errors['photo'] = u'Файл не відповідає жодному типу зображення'
+                messages.add_message(request, messages.WARNING, u'Файл не відповідає жодному типу зображення', extra_tags='photo')
+                errors += 1
             elif request.FILES.get('photo').size > (1024**2) * 2:
-                errors['photo'] = u'Зображення більше ніж 2 Мб'
+                #errors['photo'] = u'Зображення більше ніж 2 Мб'
+                messages.add_message(request, messages.WARNING, u'Зображення більше ніж 2 Мб', extra_tags='photo')
+                errors += 1
             else:
                 data['photo'] = request.FILES.get('photo')
 
@@ -122,18 +145,17 @@ def students_add(request):
                 student.save()
                 # Поретаємо користувача до списку студентів
                 return HttpResponseRedirect(
-                    u'%s?status_message=Студента успішно додано!'
-                    % reverse('home'))
+                    reverse('home'), {'messages': messages.add_message(
+                        request, messages.SUCCESS, success_added_student % (first_name, last_name))})
             else:
                 return render(request, 'students/students_add.html',
-                    {'groups': groups,
-                     'errors': errors})
+                              {'groups': groups})
         # Якщо кнопка Скасувати була натиснута:
         elif request.POST.get('cancel_button') is not None:
             # Повертаємо користувача до списку студентів
             return HttpResponseRedirect(
-                u'%s?status_message=Додавання студента скасовано'
-                % reverse('home'))
+                reverse('home'), {'messages': messages.add_message(
+                    request, messages.INFO, cancel_form)})
     else:
         # Якщо форма не була запощена:
         # Поертаємо код початково стану форми
