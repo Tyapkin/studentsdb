@@ -41,6 +41,10 @@
         <li role="presentation" {% if exams in request.path %}class="active"{% endif %}>
           <a href="{% url "exams" %}">Іспити</a>
         </li>
+        {% url "contact_admin" as contact_admin %}
+        <li role="presentation" {% if contact_admin in request.path %}class="active"{% endif %}>
+          <a href="{% url "contact_admin" %}">Контакти</a>
+        </li>
       </ul>
     </div>
   </div>

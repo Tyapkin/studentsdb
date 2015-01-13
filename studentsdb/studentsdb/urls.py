@@ -35,6 +35,9 @@ urlpatterns = patterns(
         'students.views.exams.delete_exam_result', name='delete_exam_result'),
     url(r'^exams/(?P<id>\d+)/result/edit/$',
         'students.views.exams.edit_exam_result', name='edit_exam_result'),
+    # admin contact form
+    url(r'^contact-admin/$', 'students.views.contact_admin.contact_admin',
+        name='contact_admin'),
 
     url(r'^admin/', include(admin.site.urls)),
 )

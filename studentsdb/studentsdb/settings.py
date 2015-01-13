@@ -86,3 +86,19 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
+
+# STMP server settings
+ADMIN_EMAIL = 'admin@admin.loc'
+# EMAIL_HOST = 'smtp.mandrillapp.com'
+# EMAIL_PORT = '587'
+# EMAIL_HOST_USER = 'atyapkin20@gmail.com'
+# EMAIL_HOST_PASSWORD = 'LqWREnAPdNJZM8F6VE_rXw
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = False
+
+# DEV settings smtp server
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = '1025'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+##########################
