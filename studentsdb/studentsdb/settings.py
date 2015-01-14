@@ -29,6 +29,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'students',
 )
 
@@ -88,17 +89,20 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 
 # STMP server settings
-ADMIN_EMAIL = 'admin@admin.loc'
-# EMAIL_HOST = 'smtp.mandrillapp.com'
-# EMAIL_PORT = '587'
-# EMAIL_HOST_USER = 'atyapkin20@gmail.com'
-# EMAIL_HOST_PASSWORD = 'LqWREnAPdNJZM8F6VE_rXw
-EMAIL_USE_TLS = False
+ADMIN_EMAIL = 'alexander.tyapkin@hotmail.com'
+EMAIL_HOST = 'smtp.mandrillapp.com'
+EMAIL_PORT = '587'
+EMAIL_HOST_USER = 'atyapkin20@gmail.com'
+EMAIL_HOST_PASSWORD = 'LqWREnAPdNJZM8F6VE_rXw'
+EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
 # DEV settings smtp server
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = '1025'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+#EMAIL_HOST = 'localhost'
+#EMAIL_PORT = '1025'
+#EMAIL_HOST_USER = ''
+#EMAIL_HOST_PASSWORD = ''
 ##########################
+
+## Crispy forms template pack settings
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

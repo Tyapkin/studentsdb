@@ -4,11 +4,31 @@ from django.shortcuts import render
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 
 from studentsdb.settings import ADMIN_EMAIL
 
 
 class ContactForm(forms.Form):
+    # style for form
+    def __init__(self, *args, **kwargs):
+        # call original initializer
+        super(ContactForm, self).__init__(*args, **kwargs)
+        # this helper object allow us to customize form
+        self.helper = FormHelper()
+        # form tag attributes
+        self.helper.form_class = 'form-horizontal'
+        self.helper.form_method = 'post'
+        self.helper.form_action = reverse('contact_admin')
+        # twitter bootstrap styles
+        self.helper.help_text_inline = True
+        self.helper.html5_required = True
+        self.helper.label_class = 'col-sm-2 control-label'
+        self.helper.field_class = 'col-sm-10'
+        # form buttons
+        self.helper.add_input(Submit('send_button', u'Надіслати'))
+
     from_email = forms.EmailField(label=u'Ваша е-майл адреса')
     subject = forms.CharField(label=u'Заголовок повідомлення',
                               max_length=128)
