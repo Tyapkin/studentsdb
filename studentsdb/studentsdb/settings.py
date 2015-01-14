@@ -97,12 +97,5 @@ EMAIL_HOST_PASSWORD = 'LqWREnAPdNJZM8F6VE_rXw'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
-# DEV settings smtp server
-#EMAIL_HOST = 'localhost'
-#EMAIL_PORT = '1025'
-#EMAIL_HOST_USER = ''
-#EMAIL_HOST_PASSWORD = ''
-##########################
-
 ## Crispy forms template pack settings
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

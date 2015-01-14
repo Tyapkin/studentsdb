@@ -2,6 +2,8 @@ from .settings import MEDIA_ROOT, DEBUG
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
+from students.views.students import StudentList
+
 urlpatterns = patterns(
     '',
     # URL pattern for students
@@ -12,6 +14,7 @@ urlpatterns = patterns(
         'students.views.students.students_edit', name='students_edit'),
     url(r'^students/(?P<id>\d+)/delete/$',
         'students.views.students.students_delete', name='students_delete'),
+    url(r'^student_list/$', StudentList.as_view()),
     # URL pattern for groups
     url(r'^groups/$', 'students.views.groups.groups_list', name='groups'),
     url(r'^groups/add/$',
