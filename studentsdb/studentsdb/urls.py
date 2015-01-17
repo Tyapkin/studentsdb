@@ -2,7 +2,7 @@ from .settings import MEDIA_ROOT, DEBUG
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from students.views.students import StudentList
+from students.views.contact_admin import FeedbackView, SuccessRedirectView
 
 urlpatterns = patterns(
     '',
@@ -14,7 +14,6 @@ urlpatterns = patterns(
         'students.views.students.students_edit', name='students_edit'),
     url(r'^students/(?P<id>\d+)/delete/$',
         'students.views.students.students_delete', name='students_delete'),
-    url(r'^student_list/$', StudentList.as_view()),
     # URL pattern for groups
     url(r'^groups/$', 'students.views.groups.groups_list', name='groups'),
     url(r'^groups/add/$',
@@ -39,8 +38,10 @@ urlpatterns = patterns(
     url(r'^exams/(?P<id>\d+)/result/edit/$',
         'students.views.exams.edit_exam_result', name='edit_exam_result'),
     # admin contact form
-    url(r'^contact-admin/$', 'students.views.contact_admin.contact_admin',
-        name='contact_admin'),
+    #url(r'^contact-admin/$', 'students.views.contact_admin.contact_admin',
+    #    name='contact_admin'),
+    url(r'^contact_admin/$', FeedbackView.as_view(), name='contact_admin'),
+    url(r'^success_sending_email/$', SuccessRedirectView.as_view(), name='success_sending_email'),
 
     url(r'^admin/', include(admin.site.urls)),
 )

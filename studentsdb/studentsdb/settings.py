@@ -69,9 +69,9 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'uk'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 
@@ -88,7 +88,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 
-# STMP server settings
+############### SMTP settings ################
 ADMIN_EMAIL = 'alexander.tyapkin@hotmail.com'
 EMAIL_HOST = 'smtp.mandrillapp.com'
 EMAIL_PORT = '587'
@@ -96,6 +96,22 @@ EMAIL_HOST_USER = 'atyapkin20@gmail.com'
 EMAIL_HOST_PASSWORD = 'LqWREnAPdNJZM8F6VE_rXw'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+###############################################
+
+######## Localhost SMTP settings ########
+# ADMIN_EMAIL = 'admin@test.loc'
+# EMAIL_HOST = 'localhost'
+# EMAIL_PORT = '1025'
+# EMAIL_HOST_USER = ''
+# EMAIL_HOST_PASSWORD = ''
+#########################################
 
 ## Crispy forms template pack settings
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# Django contact form settings
+DEFAULT_FROM_EMAIL = ADMIN_EMAIL
+MANAGERS = (
+    ('Alexander OUTLOOK', 'alexander.tyapkin@hotmail.com'),
+    ('Alexander GMAIL', 'atyapkin20@gmail.com'),
+)

@@ -1,20 +1,25 @@
 # -*- coding: utf-8 -*-
-from django import forms
-from django.shortcuts import render
+# from django import forms
+from django.contrib import messages
+from django.views.generic.edit import FormView
+from django.views.generic.base import RedirectView
+# from django.shortcuts import render
 from django.core.mail import send_mail
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+from contact_form.forms import ContactForm
+from contact_form.views import ContactFormView
 
-from studentsdb.settings import ADMIN_EMAIL
+# from studentsdb.settings import ADMIN_EMAIL
 
 
-class ContactForm(forms.Form):
+class FeedbackForm(ContactForm):
     # style for form
-    def __init__(self, *args, **kwargs):
+    def __init__(self, request=None, *args, **kwargs):
         # call original initializer
-        super(ContactForm, self).__init__(*args, **kwargs)
+        super(FeedbackForm, self).__init__(request=request, *args, **kwargs)
         # this helper object allow us to customize form
         self.helper = FormHelper()
         # form tag attributes
@@ -29,14 +34,22 @@ class ContactForm(forms.Form):
         # form buttons
         self.helper.add_input(Submit('send_button', u'Надіслати'))
 
-    from_email = forms.EmailField(label=u'Ваша е-майл адреса')
-    subject = forms.CharField(label=u'Заголовок повідомлення',
-                              max_length=128)
-    message = forms.CharField(label=u'Текст повідомлення',
-                              max_length=2560,
-                              widget=forms.Textarea)
+    subject_template_name = 'contact_admin/contact_form_subject.txt'
+
+    template_name = 'contact_admin/contact_form.txt'
+
+    def save(self, fail_silently=False):
+        try:
+            send_mail(fail_silently=fail_silently, **self.get_message_dict())
+        except Exception:
+            messages.error(self.request, u'Під відправки повідомлення сталася '
+                                         u'непередбачувана помилка. Будь-ласка, '
+                                         u'спробуйте скористатися формою пізніше.')
+        else:
+            messages.success(self.request, u'Повідомлення було успішно надіслано.')
 
 
+"""
 def contact_admin(request):
     # check if form was posted
     if request.method == 'POST':
@@ -67,3 +80,27 @@ def contact_admin(request):
         form = ContactForm()
 
     return render(request, 'contact_admin/form.html', {'form': form})
+"""
+
+
+class FeedbackView(ContactFormView):
+    form_class = FeedbackForm
+    template_name = 'contact_admin/form.html'
+
+    def get_success_url(self):
+        return reverse('success_sending_email')
+
+
+class SuccessRedirectView(RedirectView):
+    pattern_name = 'contact_admin'
+
+    def get_redirect_url(self, *args, **kwargs):
+        HttpResponse('Redirecting...')
+        return super(SuccessRedirectView, self).get_redirect_url(*args, **kwargs)
+
+"""
+Убрать django-contact-form. Создать полностью кастомную форму с помощью
+FormView.
+
+Приделать поле с капчей.
+"""

@@ -6,7 +6,6 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView
 
 from ..models.students import Student
 from ..models.groups import Group
@@ -14,28 +13,6 @@ from ..models.groups import Group
 """
 Почистить код здесь и в students_add.html
 """
-
-
-class StudentList(ListView):
-    model = Student
-    context_object_name = 'students'
-    template_name = 'students/student_list.html'
-
-    def get_context_data(self, **kwargs):
-        # This method add extra variables to template
-        # get original context data from parent class
-        context = super(StudentList, self).get_context_data(**kwargs)
-        # tell template not to show logo on a page
-        context['show_logo'] = False
-        # return context data
-        return context
-
-    def get_queryset(self):
-        # Order students by last name
-        # get origintal queryset
-        qs = super(StudentList, self).get_queryset()
-        # return list students ordered by last name
-        return qs.order_by('last_name')
 
 
 # Views for students
