@@ -38,11 +38,12 @@ urlpatterns = patterns(
     url(r'^exams/(?P<id>\d+)/result/edit/$',
         'students.views.exams.edit_exam_result', name='edit_exam_result'),
     # admin contact form
-    #url(r'^contact-admin/$', 'students.views.contact_admin.contact_admin',
-    #    name='contact_admin'),
     url(r'^contact_admin/$', FeedbackView.as_view(), name='contact_admin'),
-    url(r'^success_sending_email/$', SuccessRedirectView.as_view(), name='success_sending_email'),
-
+    url(r'^success_sending_email/$', SuccessRedirectView.as_view(),
+        name='success_sending_email'),
+    # simple captcha
+    url(r'^captcha/', include('captcha.urls')),
+    # admin url
     url(r'^admin/', include(admin.site.urls)),
 )
 

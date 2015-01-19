@@ -11,6 +11,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from contact_form.forms import ContactForm
 from contact_form.views import ContactFormView
+from captcha.fields import CaptchaField
 
 # from studentsdb.settings import ADMIN_EMAIL
 
@@ -42,11 +43,13 @@ class FeedbackForm(ContactForm):
         try:
             send_mail(fail_silently=fail_silently, **self.get_message_dict())
         except Exception:
-            messages.error(self.request, u'Під відправки повідомлення сталася '
-                                         u'непередбачувана помилка. Будь-ласка, '
+            messages.error(self.request, u'Під час відправки листа сталася '
+                                         u'непередбачувана помилка. Будь ласка, '
                                          u'спробуйте скористатися формою пізніше.')
         else:
             messages.success(self.request, u'Повідомлення було успішно надіслано.')
+
+    captcha = CaptchaField()
 
 
 """
@@ -101,6 +104,4 @@ class SuccessRedirectView(RedirectView):
 """
 Убрать django-contact-form. Создать полностью кастомную форму с помощью
 FormView.
-
-Приделать поле с капчей.
 """
