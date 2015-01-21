@@ -7,19 +7,21 @@
 {% block title %}Додати студента{% endblock %}
 
 {% block status_message %}
-  {% if messages %}
-  <div class="alert alert-warning" role="alert">Будь-ласка, виправте наступні помилки.</div>
-  {% endif %}
+
+{% if messages %}
+<div class="alert alert-warning" role="alert">Будь-ласка, виправте наступні помилки.</div>
+{% endif %}
+
 {% endblock %}
 
 {% block content %}
 <form action="{% url "students_add" %}" method="post" enctype="multipart/form-data" role="form" class="form-horizontal">
-  {% csrf_token %}
-  <div class="form-group{% if errors.first_name %}has-error{% endif %}">
+{% csrf_token %}
+<div class="form-group{% if errors.first_name %}has-error{% endif %}">
     <label for="first_name" class="col-sm-2 control-label">Ім'я *</label>
     <div class="col-sm-10">
-      <input type="text" value="{{ request.POST.first_name }}" name="first_name" id="first_name" class="form-control" />
-      {% if messages %}
+        <input type="text" value="{{ request.POST.first_name }}" name="first_name" id="first_name" class="form-control" />
+        {% if messages %}
         {% for message in messages %}
           {% if message.extra_tags == "first_name" %}
             <span class="help-block {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</span>
@@ -50,7 +52,8 @@
   <div class="form-group{% if errors.birthday %}has-error{% endif %}">
     <label for="birthday" class="col-sm-2 control-label">Дата народження *</label>
     <div class="col-sm-10">
-      <input type="text" value="{{ request.POST.birthday }}" name="birthday" id="birthday" class="form-control" placeholder="Напр. 1984-12-30" />
+      <input type="text" value="{{ request.POST.birthday }}" name="birthday"
+             id="birthday" class="form-control" placeholder="Напр. 1984-12-30" />
       {% if messages %}
         {% for message in messages %}
           {% if message.extra_tags == "birthday" %}
@@ -76,7 +79,8 @@
   <div class="form-group{% if errors.ticket %}has-error{% endif %}">
     <label for="ticket" class="col-sm-2 control-label">Білет *</label>
     <div class="col-sm-10">
-      <input type="text" value="{{ request.POST.ticket }}" name="ticket" id="ticket" class="form-control" />
+      <input type="text" value="{{ request.POST.ticket }}" name="ticket"
+             id="ticket" class="form-control" />
       {% if messages %}
         {% for message in messages %}
           {% if message.extra_tags == "ticket" %}

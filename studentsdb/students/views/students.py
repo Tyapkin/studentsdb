@@ -5,7 +5,7 @@ from django.views.generic import UpdateView, DeleteView
 from django.shortcuts import render
 from django.contrib import messages
 from django.forms import ModelForm
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from crispy_forms.helper import FormHelper
@@ -14,10 +14,6 @@ from crispy_forms.bootstrap import FormActions
 
 from ..models.students import Student
 from ..models.groups import Group
-
-"""
-Почистить код здесь и в students_add.html
-"""
 
 
 # Views for students
@@ -69,65 +65,70 @@ def students_add(request):
             # validate user input
             first_name = request.POST.get('first_name', '').strip()
             if not first_name:
-                messages.add_message(request, messages.WARNING, u'Ім’я є обов’язковим', extra_tags='first_name')
+                messages.warning(request, u'Ім’я є обов’язковим', extra_tags='first_name')
             else:
                 data['first_name'] = first_name
 
             last_name = request.POST.get('last_name', '').strip()
             if not last_name:
-                messages.add_message(request, messages.WARNING, u'Прізвище є обов’зковим', extra_tags='last_name')
+                messages.warning(request, u'Прізвище є обов’зковим', extra_tags='last_name')
             else:
                 data['last_name'] = last_name
 
             birthday = request.POST.get('birthday', '').strip()
             if not birthday:
-                messages.add_message(request, messages.WARNING, u'Дата нородження є обов’язковою', extra_tags='birthday')
+                messages.warning(request, u'Дата нородження є обов’язковою', extra_tags='birthday')
             else:
                 try:
                     datetime.strptime(birthday, '%Y-%m-%d')
                 except Exception:
-                    messages.add_message(request, messages.WARNING, u'Введіть корректний формат дати (напр. 1984-12-30)', extra_tags='birthday')
-                    #errors += 1
+                    messages.warning(request, u'Введіть корректний формат дати'
+                                              u'(напр. 1984-12-30)', extra_tags='birthday')
                 else:
                     data['birthday'] = birthday
 
             ticket = request.POST.get('ticket', '').strip()
             if not ticket:
-                messages.add_message(request, messages.WARNING, u'Номер білета є обов’язковим', extra_tags='ticket')
+                messages.warning(request, u'Номер білета є обов’язковим', extra_tags='ticket')
             else:
                 data['ticket'] = ticket
 
             student_group = request.POST.get('student_group', '').strip()
             if not student_group:
-                messages.add_message(request, messages.WARNING, u'Оберіть групу для студента', extra_tags='student_group')
+                messages.warning(request, u'Оберіть групу для студента', extra_tags='student_group')
             else:
                 groups = Group.objects.filter(pk=student_group)
                 if len(groups) != 1:
-                    messages.add_message(request, messages.WARNING, u'Оберіть корректну групу', extra_tags='student_group')
+                    messages.warning(request, u'Оберіть корректну групу', extra_tags='student_group')
                 else:
                     data['student_group'] = Group.objects.get(pk=student_group)
 
             # Validate image field
-            try:
-                photo = Image.open(request.FILES.get('photo'))
-            except IOError:
-                messages.add_message(request, messages.WARNING, u'Не вдалося відкрити файл', extra_tags='photo')
-                return render(request, 'students/students_add.html',
-                    {'groups': groups})
+            if request.FILES.get('photo') is not None:
+                try:
+                    photo = Image.open(request.FILES.get('photo'))
+                except IOError:
+                    messages.warning(request, u'Не вдалося відкрити файл',
+                                     extra_tags='photo')
+                    return render(request, 'students/students_add.html',
+                                  {'groups': groups})
 
-            # Підстраховка
-            if not Image.isImageType(photo):
-                messages.add_message(request, messages.WARNING, u'Файл не відповідає жодному типу зображення', extra_tags='photo')
-            elif request.FILES.get('photo').size > (1024**2) * 2:
-                messages.add_message(request, messages.WARNING, u'Зображення більше ніж 2 Мб', extra_tags='photo')
-            else:
-                data['photo'] = request.FILES.get('photo')
+                # Підстраховка
+                if not Image.isImageType(photo):
+                    messages.warning(request, u'Файл не відповідає жодному'
+                                              u'типу зображення',
+                                     extra_tags='photo')
+                elif request.FILES.get('photo').size > (1024**2) * 2:
+                    messages.warning(request, u'Зображення більше ніж 2 Мб',
+                                     extra_tags='photo')
+                else:
+                    data['photo'] = request.FILES.get('photo')
 
             storage = messages.get_messages(request)
 
             if len(storage) == 0:
-                 # Якщо дані були введені некоректно:
-                 # Віддаємо форму разом із знайденими помилками
+                # Якщо дані були введені некоректно:
+                # Віддаємо форму разом із знайденими помилками
                 # Якщо дані були введенні коректно:
                 # Створюємо та зберігаємо студента в базу
                 student = Student(**data)
