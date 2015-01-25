@@ -23,7 +23,7 @@ class Student(models.Model):
                                       on_delete=models.PROTECT,
                                       verbose_name=u'Група')
 
-    ticket = models.CharField(max_length=20, blank=False,
+    ticket = models.CharField(max_length=20, blank=False, unique=True,
                               verbose_name=u'Білет')
 
     notes = models.TextField(blank=True, verbose_name=u'Додаткові нотатки')

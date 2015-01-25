@@ -3,14 +3,14 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 from students.views.contact_admin import FeedbackView, SuccessRedirectView
-from students.views.students import StudentUpdateView, StudentDeleteView
+from students.views.students import StudentCreateView, StudentUpdateView,\
+    StudentDeleteView
 
 urlpatterns = patterns(
     '',
     # URL pattern for students
     url(r'^$', 'students.views.students.students_list', name='home'),
-    url(r'^students/add/$', 'students.views.students.students_add',
-        name='students_add'),
+    url(r'^students/add/$', StudentCreateView.as_view(), name='students_add'),
     url(r'^students/(?P<pk>\d+)/edit/$',
         StudentUpdateView.as_view(), name='students_edit'),
     url(r'^students/(?P<pk>\d+)/delete/$',

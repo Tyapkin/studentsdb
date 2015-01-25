@@ -58,3 +58,7 @@ select, textarea, input {
 .warning {
     color: red;
 }
+
+form .form-actions {
+    margin: 0 195px 15px;
+}
