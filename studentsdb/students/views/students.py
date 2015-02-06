@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.contrib import messages
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.views.generic import CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from ..models.students import Student
@@ -90,4 +91,5 @@ class StudentDeleteView(DeleteView):
     success_msg = u'Студента успішно видалено.'
 
     def get_success_url(self):
-        return u'%s?status_message=%s' % (reverse('home'), self.success_msg)
+        messages.success(self.request, self.success_msg)
+        return reverse('home')

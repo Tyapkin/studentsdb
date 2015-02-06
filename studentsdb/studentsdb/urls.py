@@ -5,6 +5,7 @@ from django.contrib import admin
 from students.views.contact_admin import FeedbackView, SuccessRedirectView
 from students.views.students import StudentCreateView, StudentUpdateView,\
     StudentDeleteView
+from students.views.groups import GroupDeleteView
 
 urlpatterns = patterns(
     '',
@@ -19,10 +20,10 @@ urlpatterns = patterns(
     url(r'^groups/$', 'students.views.groups.groups_list', name='groups'),
     url(r'^groups/add/$',
         'students.views.groups.groups_add', name='groups_add'),
-    url(r'^groups/(?P<id>\d+)/edit/$', 'students.views.groups.groups_edit',
+    url(r'^groups/(?P<pk>\d+)/edit/$', 'students.views.groups.groups_edit',
         name='groups_edit'),
-    url(r'^groups/(?P<id>\d+)/delete/$',
-        'students.views.groups.groups_delete', name='groups_delete'),
+    url(r'^groups/(?P<pk>\d+)/delete/$',
+        GroupDeleteView.as_view(), name='groups_delete'),
     # URL pattern for journal
     url(r'^journal/$', 'students.views.journal.journal', name='journal'),
     # URL pattern for exam

@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+from django.contrib import messages
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.core.urlresolvers import reverse
+from django.views.generic import DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from ..models.groups import Group
@@ -38,9 +41,18 @@ def groups_add(request):
     return HttpResponse('<h1>Add group</h1>')
 
 
-def groups_edit(request, id):
-    return HttpResponse('<h1>Edit group %s</h1>' % id)
+def groups_edit(request, pk):
+    return HttpResponse('<h1>Edit group %s</h1>' % pk)
 
 
-def groups_delete(request, id):
-    return HttpResponse('<h1>Delete group %s</h2>' % id)
+def groups_delete(request, pk):
+    return HttpResponse('<h1>Delete group %s</h2>' % pk)
+
+class GroupDeleteView(DeleteView):
+    model = Group
+    template_name = 'students/group_confirm_delete.html'
+    success_msg = u'Групу успішно видалено.'
+
+    def get_success_url(self):
+        messages.success(self.request, self.success_msg)
+        return reverse('home')
