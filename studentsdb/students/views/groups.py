@@ -3,10 +3,11 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
-from django.views.generic import DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from ..models.groups import Group
+from ..forms.forms import GroupCreateForm, GroupEditForm
 
 
 # Views for groups
@@ -37,16 +38,41 @@ def groups_list(request):
     return render(request, 'students/groups_list.html', {'groups': groups})
 
 
-def groups_add(request):
-    return HttpResponse('<h1>Add group</h1>')
+class GroupCreateView(CreateView):
+    model = Group
+    form_class = GroupCreateForm
+    template_name = 'students/groups_form.html'
+    success_msg = u'Групу успішно додано.'
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('cancel_button') is not None:
+            return reverse('groups')
+        else:
+            return super(GroupCreateView, self).post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        messages.success(self.request, self.success_msg)
+        return reverse('groups')
 
 
-def groups_edit(request, pk):
-    return HttpResponse('<h1>Edit group %s</h1>' % pk)
+class GroupUpdateView(UpdateView):
+    model = Group
+    form_class = GroupEditForm
+    template_name = 'students/groups_form.html'
+    success_msg = u'Групу успішно збережено.'
+    cancel_msg = u'Редагування групи скасовано.'
 
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('cancel_button') is not None:
+            messages.warning(self.request, self.cancel_msg)
+            return reverse('groups')
+        else:
+            return super(GroupUpdateView, self).post(request, *args, **kwargs)
 
-def groups_delete(request, pk):
-    return HttpResponse('<h1>Delete group %s</h2>' % pk)
+    def get_success_url(self):
+        messages.success(self.request, self.success_msg)
+        return reverse('groups')
+
 
 class GroupDeleteView(DeleteView):
     model = Group
@@ -55,4 +81,4 @@ class GroupDeleteView(DeleteView):
 
     def get_success_url(self):
         messages.success(self.request, self.success_msg)
-        return reverse('home')
+        return reverse('groups')

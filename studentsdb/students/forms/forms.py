@@ -10,6 +10,7 @@ from crispy_forms.bootstrap import FormActions, StrictButton
 from captcha.fields import CaptchaField
 
 from ..models.students import Student
+from ..models.groups import Group
 
 
 class StudentCreateForm(forms.ModelForm):
@@ -76,6 +77,63 @@ class StudentUpdateForm(StudentCreateForm):
                 u'Редагування студента {{ object }}',
                 'first_name', 'last_name', 'middle_name', 'birthday',
                 'photo', 'student_group', 'ticket', 'notes'
+            ),
+            # add buttons
+            FormActions(
+                Submit('add_button', u'Зберегти', css_class='btn-success'),
+                StrictButton(u'Скасувати', name='cancel_button', type='submit',
+                             css_class='btn-link')
+            ),
+        )
+
+
+class GroupCreateForm(forms.ModelForm):
+    class Meta(object):
+        model = Group
+        fields = ('title', 'leader', 'notes',)
+        widgets = {'notes': forms.Textarea(attrs={'cols': 10, 'rows': 4})}
+
+    def __init__(self, *args, **kwargs):
+        super(GroupCreateForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+
+        # set form tag attributes
+        self.helper.form_action = reverse('groups_add')
+        self.helper.form_method = 'POST'
+        self.helper.form_class = 'form-horizontal'
+
+        # set form field properties
+        self.helper.help_text_inline = True
+        self.helper.html5_required = True
+        self.helper.label_class = 'col-sm-2 control-label'
+        self.helper.field_class = 'col-sm-10'
+
+        # set layout
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Заповніть дані про групу',
+                'title', 'leader', 'notes'
+            ),
+            # add buttons
+            FormActions(
+                Submit('add_button', u'Зберегти', css_class='btn-success'),
+                HTML(u'<a class="btn btn-link" href="{% url "groups" %}"'
+                     u'role="button">Скасувати</a>')
+            ),
+        )
+
+
+class GroupEditForm(GroupCreateForm):
+    def __init__(self, *args, **kwargs):
+        super(GroupEditForm, self).__init__(*args, **kwargs)
+        self.helper.form_action = reverse('groups_edit',
+                                          kwargs={'pk': kwargs['instance'].id})
+
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Редагування групи {{ object }}',
+                'title', 'leader', 'notes'
             ),
             # add buttons
             FormActions(
