@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.contrib import messages
+from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404, HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.generic import CreateView, UpdateView, DeleteView
 
 from ..models.exams import Exam, ExamResults
+from ..forms.forms import ExamEditForm, ExamCreateForm
 
 
 def exams_list(request):
@@ -32,16 +36,46 @@ def exams_list(request):
     return render(request, 'students/exams.html', {'exams': exams})
 
 
-def add_exam(request):
-    return HttpResponse('<h1>Add exam</h1>')
+class ExamCreateView(CreateView):
+    model = Exam
+    template_name = 'students/exams_form.html'
+    form_class = ExamCreateForm
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('cancel_button') is not None:
+            return HttpResponseRedirect(reverse('exams'))
+        else:
+            return super(ExamCreateView, self).post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        messages.success(self.request, u'Екзамен успішно додано.')
+        return reverse('exams')
 
 
-def edit_exam(request, id):
-    return HttpResponse('<h1>Edit exam %s</h1>' % id)
+class ExamEditView(UpdateView):
+    model = Exam
+    template_name = 'students/exams_form.html'
+    form_class = ExamEditForm
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('cancel_button') is not None:
+            messages.warning(self.request, u'Редагування іспиту скасовано.')
+            return HttpResponseRedirect(reverse('exams'))
+        else:
+            return super(ExamEditView, self).post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        messages.success(self.request, u'Зміни збережено успішно.')
+        return reverse('exams')
 
 
-def delete_exam(request, id):
-    return HttpResponse('<h1>Delete exam %s</h1>' % id)
+class ExamDeleteView(DeleteView):
+    model = Exam
+    template_name = 'students/exam_confirm_delete.html'
+
+    def get_success_url(self):
+        messages.success(self.request, u'Екзамен успішно видалено.')
+        return reverse('exams')
 
 
 def exam_results(request, id):
@@ -76,3 +110,10 @@ def delete_exam_result(request, id):
 
 def edit_exam_result(request, id):
     return HttpResponse('<h1>Edit exam %s result</h1>' % id)
+
+
+"""
+ProtectedError
+Разобраться с єкзаменами...
+реализовать удаление екзамена и его результатов.
+"""

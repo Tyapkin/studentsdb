@@ -11,6 +11,7 @@ from captcha.fields import CaptchaField
 
 from ..models.students import Student
 from ..models.groups import Group
+from ..models.exams import Exam
 
 
 class StudentCreateForm(forms.ModelForm):
@@ -134,6 +135,66 @@ class GroupEditForm(GroupCreateForm):
             Fieldset(
                 u'Редагування групи {{ object }}',
                 'title', 'leader', 'notes'
+            ),
+            # add buttons
+            FormActions(
+                Submit('add_button', u'Зберегти', css_class='btn-success'),
+                StrictButton(u'Скасувати', name='cancel_button', type='submit',
+                             css_class='btn-link')
+            ),
+        )
+
+
+class ExamCreateForm(forms.ModelForm):
+    class Meta(object):
+        model = Exam
+        fields = ('exam_name', 'date_exam', 'teacher',
+                  'exam_group', 'auditorium')
+        widgets = {'date_exam': forms.DateTimeInput(),}
+
+    def __init__(self, *args, **kwargs):
+        super(ExamCreateForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper(self)
+
+        # set form tag attributes
+        self.helper.form_action = reverse('add_exam')
+        self.helper.form_method = 'POST'
+        self.helper.form_class = 'form-horizontal'
+
+        # set form field properties
+        self.helper.help_text_inline = True
+        self.helper.html5_required = True
+        self.helper.label_class = 'col-sm-2 control-label'
+        self.helper.field_class = 'col-sm-10'
+
+        # set layout
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Заповніть дані про екзамен',
+                'exam_name', 'date_exam', 'teacher',
+                'exam_group', 'auditorium',
+            ),
+            # add buttons
+            FormActions(
+                Submit('add_button', u'Зберегти', css_class='btn-success'),
+                HTML(u'<a class="btn btn-link" href="{% url "exams" %}"'
+                     u'role="button">Скасувати</a>')
+            ),
+        )
+
+
+class ExamEditForm(ExamCreateForm):
+    def __init__(self, *args, **kwargs):
+        super(ExamEditForm, self).__init__(*args, **kwargs)
+        self.helper.form_action = reverse('edit_exam',
+                                          kwargs={'pk': kwargs['instance'].pk})
+
+        self.helper.layout = Layout(
+            Fieldset(
+                u'Внести зміни до {{ object }}',
+                'exam_name', 'date_exam', 'teacher',
+                'exam_group', 'auditorium',
             ),
             # add buttons
             FormActions(

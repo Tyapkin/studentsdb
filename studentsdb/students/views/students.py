@@ -46,7 +46,7 @@ class StudentCreateView(CreateView):
     model = Student
     form_class = StudentCreateForm
     template_name = 'students/students_form.html'
-    success_msg = u'Студент %s успішно доданий.'
+    success_msg = u'Студент успішно доданий.'
     cancel_msg = u'Додавання студента скасовано.'
 
     def get_form_kwargs(self):
@@ -56,14 +56,14 @@ class StudentCreateView(CreateView):
 
     def post(self, request, *args, **kwargs):
         if request.POST.get('cancel_button') is not None:
-            return HttpResponseRedirect(
-                u'%s?status_message=%s' % (reverse('home'), self.cancel_msg)
-            )
+            messages.warning(self.request, self.cancel_msg)
+            return reverse('home')
         else:
             return super(StudentCreateView, self).post(request, *args, **kwargs)
 
     def get_success_url(self):
-        return u'%s?status_message=%s' % (reverse('home'), self.success_msg)
+        messages.success(self.request, self.success_msg)
+        return reverse('home')
 
 
 class StudentUpdateView(UpdateView):
@@ -74,13 +74,13 @@ class StudentUpdateView(UpdateView):
     cancel_msg = u'Редагування студента скасовано'
 
     def get_success_url(self):
-        return u'%s?status_message=%s' % (reverse('home'), self.success_msg,)
+        messages.success(self.request, self.success_msg)
+        return reverse('home')
 
     def post(self, request, *args, **kwargs):
         if request.POST.get('cancel_button') is not None:
-            return HttpResponseRedirect(
-                u'%s?status_message=%s' % (reverse('home'), self.cancel_msg)
-            )
+            messages.warning(self.request, self.cancel_msg)
+            return HttpResponseRedirect(reverse('home'))
         else:
             return super(StudentUpdateView, self).post(request, *args, **kwargs)
 

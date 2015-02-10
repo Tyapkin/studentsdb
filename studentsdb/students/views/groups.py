@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import messages
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -65,7 +65,7 @@ class GroupUpdateView(UpdateView):
     def post(self, request, *args, **kwargs):
         if request.POST.get('cancel_button') is not None:
             messages.warning(self.request, self.cancel_msg)
-            return reverse('groups')
+            return HttpResponseRedirect(reverse('groups'))
         else:
             return super(GroupUpdateView, self).post(request, *args, **kwargs)
 

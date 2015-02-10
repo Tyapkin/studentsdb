@@ -18,6 +18,10 @@ def students_proc(request):
          '/edit/' in request.path:
         adding = u'Додати групу'
         editing = u'Редагування групи'
+    elif '/exams/' in request.path and '/add/' in request.path or \
+         '/edit/' in request.path:
+        adding = u'Додати екзамен'
+        editing = u'Редагування екзамену'
 
     return {
         'PORTAL_URL': absolute_uri,

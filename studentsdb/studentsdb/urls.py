@@ -7,6 +7,7 @@ from students.views.students import StudentCreateView, StudentUpdateView,\
     StudentDeleteView
 from students.views.groups import GroupCreateView, GroupDeleteView, \
     GroupUpdateView
+from students.views.exams import ExamCreateView, ExamEditView, ExamDeleteView
 
 urlpatterns = patterns(
     '',
@@ -29,11 +30,11 @@ urlpatterns = patterns(
     url(r'^journal/$', 'students.views.journal.journal', name='journal'),
     # URL pattern for exam
     url(r'^exams/$', 'students.views.exams.exams_list', name='exams'),
-    url(r'^exams/add/$', 'students.views.exams.add_exam', name='add_exam'),
-    url(r'^exams/(?P<id>\d+)/delete/$',
-        'students.views.exams.delete_exam', name='delete_exam'),
-    url(r'^exams/(?P<id>\d+)/edit/$',
-        'students.views.exams.edit_exam', name='edit_exam'),
+    url(r'^exams/add/$', ExamCreateView.as_view(), name='add_exam'),
+    url(r'^exams/(?P<pk>\d+)/delete/$',
+        ExamDeleteView.as_view(), name='delete_exam'),
+    url(r'^exams/(?P<pk>\d+)/edit/$',
+        ExamEditView.as_view(), name='edit_exam'),
     url(r'^exams/(?P<id>\d+)/results/$',
         'students.views.exams.exam_results', name='exam_results'),
     url(r'^exams/(?P<id>\d+)/result/delete/$',
