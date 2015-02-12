@@ -32,7 +32,6 @@ class StudentAdmin(admin.ModelAdmin):
     list_display_links = [
         'last_name', 'first_name'
     ]
-    list_editable = ['student_group']
     ordering = ['last_name']
     list_filter = ['student_group']
     list_per_page = 10
@@ -42,20 +41,40 @@ class StudentAdmin(admin.ModelAdmin):
 
     form = StudentFormAdmin
 
-    def get_view_on_site_url(self, obj=None):
-        return reverse('students_edit', kwargs={'pk': obj.id})
+    # def get_view_on_site_url(self, obj=None):
+    #    return reverse('students_edit', kwargs={'pk': obj.pk})
+
+
+class GroupFormAdmin(ModelForm):
+
+    def clean_leader(self):
+        """
+        if the student is in another group, then the group
+        can not be installed warden
+        """
+        # Set warning message
+        warn_msg = u'Студент %s є учасником іншої групи.'
+
+        if self.cleaned_data['leader'] is None:
+            # Delete leader from group
+            setattr(self.instance, 'leader', self.cleaned_data['leader'])
+        elif self.cleaned_data['leader'].student_group != self.instance:
+            raise ValidationError(warn_msg % (self.cleaned_data['leader']),
+                                  code='invalid')
+
+        return self.cleaned_data['leader']
 
 
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
     list_display = ['title', 'leader']
     ordering = ['title']
-    list_editable = ['leader']
     list_per_page = 10
     search_fields = ['title', 'leader', 'notes']
+    form = GroupFormAdmin
 
-    def get_view_on_site_url(self, obj=None):
-        return reverse('groups_edit', kwargs={'pk': obj.id})
+    # def get_view_on_site_url(self, obj=None):
+    #    return reverse('groups_edit', kwargs={'pk': obj.pk})
 
 
 @admin.register(Exam)
