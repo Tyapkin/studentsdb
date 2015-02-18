@@ -6,6 +6,7 @@ from django.forms import ValidationError, ModelForm
 from .models.students import Student
 from .models.groups import Group
 from .models.exams import Exam, ExamResults
+from .models.monthjournal import MonthJournal
 
 
 class StudentFormAdmin(ModelForm):
@@ -81,6 +82,12 @@ class GroupAdmin(admin.ModelAdmin):
 class ExamAdmin(admin.ModelAdmin):
     pass
 
+
 @admin.register(ExamResults)
 class ExamResultsAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(MonthJournal)
+class MonthJournalAdmin(admin.ModelAdmin):
     pass

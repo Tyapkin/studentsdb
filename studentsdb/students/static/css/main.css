@@ -62,3 +62,10 @@ select, textarea, input {
 form .form-actions {
     margin: 0 195px 15px;
 }
+
+/* month journal styles */
+td.day-box, td.day-header {
+    padding: 4px !important;
+    vertical-align: middle !important;
+    text-align: center;
+}
