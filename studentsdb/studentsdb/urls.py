@@ -4,7 +4,7 @@ from django.contrib import admin
 
 from students.views.contact_admin import FeedbackView, SuccessRedirectView
 from students.views.students import StudentCreateView, StudentUpdateView,\
-    StudentDeleteView
+    StudentDeleteView, StudentListView
 from students.views.groups import GroupCreateView, GroupDeleteView, \
     GroupUpdateView
 from students.views.exams import ExamCreateView, ExamEditView, ExamDeleteView
@@ -13,7 +13,8 @@ from students.views.journal import JournalView
 urlpatterns = patterns(
     '',
     # URL pattern for students
-    url(r'^$', 'students.views.students.students_list', name='home'),
+    # url(r'^$', 'students.views.students.students_list', name='home'),
+    url(r'^$', StudentListView.as_view(), name='home'),
     url(r'^students/add/$', StudentCreateView.as_view(), name='students_add'),
     url(r'^students/(?P<pk>\d+)/edit/$',
         StudentUpdateView.as_view(), name='students_edit'),

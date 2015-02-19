@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
 from django.contrib import messages
-from django.shortcuts import render
+# from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, UpdateView, DeleteView
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.generic.base import TemplateView
+# from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from ..util import paginate
 from ..models.students import Student
 from ..forms.forms import StudentCreateForm, StudentUpdateForm
 
 
 # Views for students
+"""
 def students_list(request):
     students = Student.objects.all()
 
@@ -40,6 +43,36 @@ def students_list(request):
 
     return render(request, 'students/students_list.html',
                   {'students': students})
+"""
+
+
+class StudentListView(TemplateView):
+    template_name = 'students/students_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(StudentListView, self).get_context_data(**kwargs)
+
+        # get variable 'order_by' from request.GET
+        order_by = self.request.GET.get('order_by', '')
+        # get queryset from Student
+        students = Student.objects.all()
+
+        # try to order students list
+        if order_by in ('last_name', 'first_name', 'ticket'):
+            students = students.order_by(order_by)
+
+            # if reverse in request.GET
+            if self.request.GET.get('reverse', '') == '1':
+                # sort student list reverse
+                students = students.reverse()
+        else:
+            students = students.order_by('last_name')
+
+
+        context = paginate(students, 5, self.request, context,
+                           var_name='students')
+
+        return context
 
 
 class StudentCreateView(CreateView):
