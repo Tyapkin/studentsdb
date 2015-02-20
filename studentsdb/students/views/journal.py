@@ -3,8 +3,8 @@ from datetime import datetime, date
 from calendar import monthrange, weekday, day_abbr
 from dateutil.relativedelta import relativedelta
 
+from django.http import JsonResponse
 from django.core.urlresolvers import reverse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic.base import TemplateView
 
 from ..models.students import Student
@@ -15,6 +15,9 @@ from ..util import paginate
 # Views for journal
 class JournalView(TemplateView):
     template_name = 'students/journal.html'
+
+    def post(self, request, *args, **kwargs):
+        return JsonResponse({'key': 'value'})
 
     def get_context_data(self, **kwargs):
         context = super(JournalView, self).get_context_data(**kwargs)
