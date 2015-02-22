@@ -69,3 +69,7 @@ td.day-box, td.day-header {
     vertical-align: middle !important;
     text-align: center;
 }
+
+#ajax-progress-indicator {
+    display: none;
+}
