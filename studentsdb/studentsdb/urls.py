@@ -13,7 +13,6 @@ from students.views.journal import JournalView
 urlpatterns = patterns(
     '',
     # URL pattern for students
-    # url(r'^$', 'students.views.students.students_list', name='home'),
     url(r'^$', StudentListView.as_view(), name='home'),
     url(r'^students/add/$', StudentCreateView.as_view(), name='students_add'),
     url(r'^students/(?P<pk>\d+)/edit/$',
@@ -21,7 +20,6 @@ urlpatterns = patterns(
     url(r'^students/(?P<pk>\d+)/delete/$',
         StudentDeleteView.as_view(), name='students_delete'),
     # URL pattern for groups
-    # url(r'^groups/$', 'students.views.groups.groups_list', name='groups'),
     url(r'^groups/$', GroupListView.as_view(), name='groups'),
     url(r'^groups/add/$',
         GroupCreateView.as_view(), name='groups_add'),
