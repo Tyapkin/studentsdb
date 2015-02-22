@@ -15,15 +15,16 @@
     <tr>
       <th>№</th>
       <th>
-        <a href="{% url "groups" %}?order_by=title{% if order_by == 'title' and reverse != '1' %}&amp;reverse=1{% endif %}">
-          Назва
-          {% if order_by == 'title' and reverse != '1' %}&uarr;
-          {% elif order_by == 'title' and reverse == '1' %}&darr;
-          {% endif %}
+        <a href="{% if not reverse %}?order_by=title&amp;reverse=1{% else %}?order_by=title{% endif %}">
+            Назва
+            {% if not order_by and not reverse %}&uarr;
+            {% elif order_by == 'title' and reverse != '1' %}&uarr;
+            {% elif order_by == 'title' and reverse == '1' %}&darr;
+            {% endif %}
         </a>
       </th>
       <th>
-        <a href="{% url "groups" %}?order_by=leader{% if order_by == 'leader' and reverse != '1' %}&amp;reverse=1{% endif %}">
+        <a href="?order_by=leader{% if order_by == 'leader' and reverse != '1' %}&amp;reverse=1{% endif %}">
           Староста
           {% if order_by == 'leader' and reverse != '1' %}&uarr;
           {% elif order_by == 'leader' and reverse == '1' %}&darr;
@@ -35,7 +36,7 @@
   </thead>
   {% endwith %}
   <tbody>
-  {% for group in groups %}
+  {% for group in group_list %}
     <tr>
       <td>{{ forloop.counter }}</td>
       <td><a href="{% url "groups_edit" group.id %}" title="редагувати">{{ group.title }}</a></td>
@@ -62,26 +63,11 @@
   {% endfor %}
   </tbody>
 </table>
-{% endblock %}
 
-{% block pagination %}
+{% with object_list=group_list %}
 
-{% if groups.has_other_pages %}
-{% with order_by=request.GET.order_by reverse=request.GET.reverse %}
-<nav>
-  <ul class="pagination">
-    <li><a href="{% url "groups" %}?page=1&amp;order_by={{ order_by }}&amp;reverse={{ reverse }}">&laquo;</a></li>
-    {% for p in groups.paginator.page_range %}
-    <li {% if groups.number == p %}class="active"{% endif %}>
-      <a href="{% url "groups" %}?page={{ p }}&amp;order_by={{ order_by }}&amp;reverse={{ reverse }}">{{ p }}</a>
-    </li>
-    {% endfor %}
-    <li>
-      <a href="{% url "groups" %}?page={{ groups.paginator.num_pages }}&amp;order_by={{ order_by }}&amp;reverse={{ reverse }}">&raquo;</a>
-    </li>
-  </ul>
-</nav>
+{% include "students/pagination.html" %}
+
 {% endwith %}
-{% endif %}
 
 {% endblock %}

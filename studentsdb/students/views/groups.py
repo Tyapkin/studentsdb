@@ -3,12 +3,12 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from ..models.groups import Group
 from ..forms.forms import GroupCreateForm, GroupEditForm
-
+from ..util import paginate
 
 # Views for groups
 def groups_list(request):
@@ -36,6 +36,33 @@ def groups_list(request):
         groups = paginator.page(paginator.num_pages)
 
     return render(request, 'students/groups_list.html', {'groups': groups})
+
+
+class GroupListView(ListView):
+    template_name = 'students/groups_list.html'
+    model = Group
+
+    def get_queryset(self):
+        objects_list = Group.objects.all()
+
+        # try to order groups list
+        order_by = self.request.GET.get('order_by', '')
+
+        if order_by in ('title', 'leader'):
+            objects_list = objects_list.order_by(order_by)
+
+            if self.request.GET.get('reverse', '') == '1':
+                objects_list = objects_list.reverse()
+
+        return objects_list
+
+    def get_context_data(self, **kwargs):
+        context = super(GroupListView, self).get_context_data(**kwargs)
+
+        context = paginate(self.object_list, 5, self.request, context,
+                           var_name='group_list')
+
+        return context
 
 
 class GroupCreateView(CreateView):

@@ -6,7 +6,7 @@ from students.views.contact_admin import FeedbackView, SuccessRedirectView
 from students.views.students import StudentCreateView, StudentUpdateView,\
     StudentDeleteView, StudentListView
 from students.views.groups import GroupCreateView, GroupDeleteView, \
-    GroupUpdateView
+    GroupUpdateView, GroupListView
 from students.views.exams import ExamCreateView, ExamEditView, ExamDeleteView
 from students.views.journal import JournalView
 
@@ -21,7 +21,8 @@ urlpatterns = patterns(
     url(r'^students/(?P<pk>\d+)/delete/$',
         StudentDeleteView.as_view(), name='students_delete'),
     # URL pattern for groups
-    url(r'^groups/$', 'students.views.groups.groups_list', name='groups'),
+    # url(r'^groups/$', 'students.views.groups.groups_list', name='groups'),
+    url(r'^groups/$', GroupListView.as_view(), name='groups'),
     url(r'^groups/add/$',
         GroupCreateView.as_view(), name='groups_add'),
     url(r'^groups/(?P<pk>\d+)/edit/$', GroupUpdateView.as_view(),
