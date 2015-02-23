@@ -7,7 +7,8 @@ from students.views.students import StudentCreateView, StudentUpdateView,\
     StudentDeleteView, StudentListView
 from students.views.groups import GroupCreateView, GroupDeleteView, \
     GroupUpdateView, GroupListView
-from students.views.exams import ExamCreateView, ExamEditView, ExamDeleteView
+from students.views.exams import ExamCreateView, ExamEditView, ExamDeleteView, \
+    ExamListView
 from students.views.journal import JournalView
 
 urlpatterns = patterns(
@@ -30,7 +31,7 @@ urlpatterns = patterns(
     # URL pattern for journal
     url(r'^journal/$', JournalView.as_view(), name='journal'),
     # URL pattern for exam
-    url(r'^exams/$', 'students.views.exams.exams_list', name='exams'),
+    url(r'^exams/$', ExamListView.as_view(), name='exams'),
     url(r'^exams/add/$', ExamCreateView.as_view(), name='add_exam'),
     url(r'^exams/(?P<pk>\d+)/delete/$',
         ExamDeleteView.as_view(), name='delete_exam'),

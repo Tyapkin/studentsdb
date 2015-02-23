@@ -4,36 +4,42 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
+from ..util import paginate
 from ..models.exams import Exam, ExamResults
 from ..forms.forms import ExamEditForm, ExamCreateForm
 
 
-def exams_list(request):
-    exams = Exam.objects.all()
+class ExamListView(ListView):
+    template_name = 'students/exams.html'
+    model = Exam
 
-    # try to order students list
-    order_by = request.GET.get('order_by', '')
+    def get_queryset(self):
+        object_list = Exam.objects.all()
 
-    if order_by in ('exam_name', 'date_exam', 'teacher', 'exam_group'):
-        exams = exams.order_by(order_by)
+        order_by = self.request.GET.get('order_by', '')
 
-        if request.GET.get('reverse', '') == '1':
-            exams = exams.reverse()
+        if order_by in ('exam_name', 'date_exam', 'teacher', 'exam_group',
+                        'auditorium'):
+            object_list = object_list.order_by(order_by)
 
-    paginator = Paginator(exams, 5)
-    page = request.GET.get('page')
+            if self.request.GET.get('reverse', '') == '1':
+                object_list = object_list.reverse()
+        else:
+            object_list = object_list.order_by('exam_name')
 
-    try:
-        exams = paginator.page(page)
-    except PageNotAnInteger:
-        exams = paginator.page(1)
-    except EmptyPage:
-        exams = paginator.page(paginator.num_pages)
+        return object_list
 
-    return render(request, 'students/exams.html', {'exams': exams})
+    def get_context_data(self, **kwargs):
+        context = super(ExamListView, self).get_context_data(**kwargs)
+
+        context = paginate(self.object_list, 5, self.request, context,
+                           var_name='exam_list')
+
+        print '<<< in context ==>> ', context
+
+        return context
 
 
 class ExamCreateView(CreateView):
