@@ -15,20 +15,20 @@ class GroupListView(ListView):
     model = Group
 
     def get_queryset(self):
-        objects_list = Group.objects.all()
+        object_list = Group.objects.all()
 
         # try to order groups list
         order_by = self.request.GET.get('order_by', '')
 
         if order_by in ('title', 'leader'):
-            objects_list = objects_list.order_by(order_by)
+            object_list = object_list.order_by(order_by)
 
             if self.request.GET.get('reverse', '') == '1':
-                objects_list = objects_list.reverse()
+                object_list = object_list.reverse()
         else:
-            objects_list = objects_list.order_by('title')
+            object_list = object_list.order_by('title')
 
-        return objects_list
+        return object_list
 
     def get_context_data(self, **kwargs):
         context = super(GroupListView, self).get_context_data(**kwargs)
