@@ -25,6 +25,8 @@ class GroupListView(ListView):
 
             if self.request.GET.get('reverse', '') == '1':
                 objects_list = objects_list.reverse()
+        else:
+            objects_list = objects_list.order_by('title')
 
         return objects_list
 
