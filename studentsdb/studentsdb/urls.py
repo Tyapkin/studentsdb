@@ -29,7 +29,7 @@ urlpatterns = patterns(
     url(r'^groups/(?P<pk>\d+)/delete/$',
         GroupDeleteView.as_view(), name='groups_delete'),
     # URL pattern for journal
-    url(r'^journal/$', JournalView.as_view(), name='journal'),
+    url(r'^journal/(?P<pk>\d+)?/?$', JournalView.as_view(), name='journal'),
     # URL pattern for exam
     url(r'^exams/$', ExamListView.as_view(), name='exams'),
     url(r'^exams/add/$', ExamCreateView.as_view(), name='add_exam'),
