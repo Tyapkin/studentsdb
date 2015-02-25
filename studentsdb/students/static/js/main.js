@@ -49,7 +49,16 @@ function initGroupSelector() {
     });
 }
 
+function initDateFields() {
+    $('input.dateinput, input.datetimeinput').datetimepicker({
+        'format': 'YYYY-MM-DD'
+    }).on('dp.hide', function(event) {
+        $(this).blur();
+    });
+}
+
 $(document).ready(function() {
     initJournal();
     initGroupSelector();
+    initDateFields();
 });
