@@ -2,39 +2,50 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.views.generic import CreateView, UpdateView, DeleteView
-from django.views.generic.base import TemplateView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
+# from django.views.generic.base import TemplateView
 
-from ..util import paginate
+from ..util import paginate, get_current_group
 from ..models.students import Student
 from ..forms.forms import StudentCreateForm, StudentUpdateForm
 
 
 # Class based views for students
-class StudentListView(TemplateView):
+class StudentListView(ListView):
     template_name = 'students/students_list.html'
+    model = Student
+
+    def get_queryset(self):
+        # check if we need to show only one group of students
+        current_group = get_current_group(self.request)
+
+        if current_group:
+            # get queryset from Student for one group
+            object_list = Student.objects.filter(student_group=current_group)
+        else:
+            # otherwise show all students
+            object_list = Student.objects.all()
+
+        return object_list
 
     def get_context_data(self, **kwargs):
         context = super(StudentListView, self).get_context_data(**kwargs)
 
         # get variable 'order_by' from request.GET
         order_by = self.request.GET.get('order_by', '')
-        # get queryset from Student
-        students = Student.objects.all()
 
         # try to order students list
         if order_by in ('last_name', 'first_name', 'ticket'):
-            students = students.order_by(order_by)
+            self.object_list = self.object_list.order_by(order_by)
 
             # if reverse in request.GET
             if self.request.GET.get('reverse', '') == '1':
                 # sort student list reverse
-                students = students.reverse()
+                self.object_list = self.object_list.reverse()
         else:
-            students = students.order_by('last_name')
+            self.object_list = self.object_list.order_by('last_name')
 
-
-        context = paginate(students, 5, self.request, context,
+        context = paginate(self.object_list, 5, self.request, context,
                            var_name='students')
 
         return context
