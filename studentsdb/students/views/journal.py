@@ -9,7 +9,7 @@ from django.views.generic.base import TemplateView
 
 from ..models.students import Student
 from ..models.monthjournal import MonthJournal
-from ..util import paginate
+from ..util import paginate, get_current_group
 
 
 # Views for journal
@@ -67,12 +67,17 @@ class JournalView(TemplateView):
             }
             for d in range(1, number_of_days+1)
         ]
+        # get current group
+        current_group = get_current_group(self.request)
         # get all students from database, or just one if we need to
         # display journal for one student
         if kwargs.get('pk'):
             queryset = [Student.objects.get(pk=kwargs['pk'])]
         else:
-            queryset = Student.objects.order_by('last_name')
+            if current_group:
+                queryset = Student.objects.filter(student_group=current_group).order_by('last_name')
+            else:
+                queryset = Student.objects.order_by('last_name')
         # url to update student presence, for form post
         update_url = reverse('journal')
         # go over all students and collect data about presence
