@@ -52,8 +52,8 @@
         <img width="30" height="30" class="img-circle" src="{% static "img/default_user.png" %}" />
       {% endif %}
       </td>
-      <td><a href="{% url "students_edit" student.id %}" title="редагувати">{{ student.last_name }}</a></td>
-      <td><a href="{% url "students_edit" student.id %}" title="регувати">{{ student.first_name }}</a></td>
+      <td><a href="{% url "students_edit" student.id %}" class="student-edit-form-link" title="редагувати">{{ student.last_name }}</a></td>
+      <td><a href="{% url "students_edit" student.id %}" class="student-edit-form-link" title="редагувати">{{ student.first_name }}</a></td>
       <td>{{ student.ticket }}</td>
       <td>
         <div class="dropdown">
@@ -61,7 +61,7 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "students_edit" student.id %}">Редагувати</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "students_edit" student.id %}" class="student-edit-form-link">Редагувати</a></li>
             <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "journal" student.id %}">Відвідування</a></li>
             <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "students_delete" student.id %}">Видалити</a></li>
           </ul>

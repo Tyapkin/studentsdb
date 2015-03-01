@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
-from ..util import paginate
+from ..util import paginate, get_current_group
 from ..models.exams import Exam, ExamResults
 from ..forms.forms import ExamEditForm, ExamCreateForm
 
@@ -16,28 +16,30 @@ class ExamListView(ListView):
     model = Exam
 
     def get_queryset(self):
-        object_list = Exam.objects.all()
+        current_group = get_current_group(self.request)
 
-        order_by = self.request.GET.get('order_by', '')
-
-        if order_by in ('exam_name', 'date_exam', 'teacher', 'exam_group',
-                        'auditorium'):
-            object_list = object_list.order_by(order_by)
-
-            if self.request.GET.get('reverse', '') == '1':
-                object_list = object_list.reverse()
+        if current_group:
+            object_list = Exam.objects.filter(exam_group=current_group)
+            print '<<< object_list ==>> ', object_list
         else:
-            object_list = object_list.order_by('exam_name')
+            object_list = Exam.objects.order_by('exam_name')
 
         return object_list
 
     def get_context_data(self, **kwargs):
         context = super(ExamListView, self).get_context_data(**kwargs)
 
+        order_by = self.request.GET.get('order_by', '')
+
+        if order_by in ('exam_name', 'date_exam', 'teacher', 'exam_group',
+                        'auditorium'):
+            self.object_list = self.object_list.order_by(order_by)
+
+            if self.request.GET.get('reverse', '') == '1':
+                self.object_list = self.object_list.reverse()
+
         context = paginate(self.object_list, 5, self.request, context,
                            var_name='exam_list')
-
-        print '<<< in context ==>> ', context
 
         return context
 
