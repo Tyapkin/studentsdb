@@ -4,8 +4,8 @@ from django.apps import AppConfig
 
 class StudentsAppConfig(AppConfig):
     name = 'students'
-    verbose_name = 'Students Application'
+    verbose_name = u'База студентів'
 
     def ready(self):
         # Импорт обработчиков сигналов
-        import students.signals.handlers
+        from .signals import handlers
