@@ -51,7 +51,15 @@ function initGroupSelector() {
 
 function initDateFields() {
     $('input.dateinput').datetimepicker({
-        'format': 'YYYY-MM-DD'
+        'format': 'YYYY-MM-DD',
+    }).on('dp.hide', function(event) {
+        $(this).blur();
+    });
+}
+
+function initExamDateFields() {
+    $('input.datetimeinput').datetimepicker({
+        'format': 'YYYY-MM-DD hh:mm:ss',
     }).on('dp.hide', function(event) {
         $(this).blur();
     });
@@ -132,5 +140,6 @@ $(document).ready(function() {
     initJournal();
     initGroupSelector();
     initDateFields();
+    initExamDateFields();
     initEditStudentPage();
 });

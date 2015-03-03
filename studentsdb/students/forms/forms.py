@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from contact_form.forms import ContactForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, HTML
-from crispy_forms.bootstrap import FormActions, StrictButton
+from crispy_forms.bootstrap import FormActions, StrictButton, AppendedText
 from captcha.fields import CaptchaField
 
 from ..models.students import Student
@@ -46,8 +46,14 @@ class StudentCreateForm(forms.ModelForm):
         self.helper.layout = Layout(
             Fieldset(
                 u'Заповніть дані про студента',
-                'first_name', 'last_name', 'middle_name', 'birthday',
-                'photo', 'student_group', 'ticket', 'notes'
+                'first_name',
+                'last_name',
+                'middle_name',
+                'birthday',
+                'photo',
+                'student_group',
+                'ticket',
+                'notes'
             ),
             # add buttons
             FormActions(
