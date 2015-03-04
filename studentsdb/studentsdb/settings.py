@@ -125,7 +125,7 @@ LOGGING = {
     'disable_existing_loggers': True,
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s: %(asctime)s %(module)s: %(message)s'
+            'format': '%(levelname)s %(asctime)s %(module)s: %(message)s'
         },
         'simple': {
             'format': '%(levelname)s: %(message)s'
@@ -134,7 +134,7 @@ LOGGING = {
     'handlers': {
         'null': {
             'level': 'DEBUG',
-            'class': 'logging.NullHandler'
+            'class': 'logging.NullHandler',
         },
         'console': {
             'level': 'INFO',
@@ -152,15 +152,19 @@ LOGGING = {
         'django': {
             'handlers': ['null'],
             'propagate': True,
-            'level': 'INFO'
+            'level': 'INFO',
         },
         'students.signals': {
             'handlers': ['console', 'file'],
-            'level': 'INFO'
+            'level': 'INFO',
         },
         'students.views.contact_admin': {
             'handlers': ['console', 'file'],
-            'level': 'INFO'
+            'level': 'INFO',
+        },
+        'students.forms.forms': {
+            'handlers': ['console', 'file'],
+            'level': 'ERROR',
         }
     }
 }

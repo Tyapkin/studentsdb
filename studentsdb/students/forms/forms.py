@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 from django import forms
 from django.contrib import messages
 from django.core.urlresolvers import reverse
@@ -236,13 +237,16 @@ class FeedbackForm(ContactForm):
     template_name = 'contact_admin/contact_form.txt'
 
     def save(self, fail_silently=False):
+        error_message = u'Під час відправки листа сталася непередбачувана помилка.' \
+                      u'Будь ласка, спробуйте скористатися формою пізніше.'
+        success_message = u'Повідомлення було успішно надіслано.'
         try:
             send_mail(fail_silently=fail_silently, **self.get_message_dict())
         except Exception:
-            messages.error(self.request, u'Під час відправки листа сталася '
-                                         u'непередбачувана помилка. Будь ласка, '
-                                         u'спробуйте скористатися формою пізніше.')
+            messages.error(self.request, error_message)
+            logger = logging.getLogger(__name__)
+            logger.exception(error_message)
         else:
-            messages.success(self.request, u'Повідомлення було успішно надіслано.')
+            messages.success(self.request, success_message)
 
     captcha = CaptchaField()
