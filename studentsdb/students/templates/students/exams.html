@@ -65,7 +65,7 @@
       <td>{{ forloop.counter }}</td>
       <td><a href="{% url "exam_results" exam.id %}" title="результати">{{ exam.exam_name }}</a></td>
       <td>{{ exam.teacher }}</td>
-      <td><a href="{% url "groups_edit" exam.exam_group_id %}" title="редагувати">{{ exam.exam_group.title }}</a></td>
+      <td><a href="{% url "groups_edit" exam.exam_group_id %}" class="edit-form-link" title="редагувати">{{ exam.exam_group.title }}</a></td>
       <td>{{ exam.date_exam|date:"d/m/Y - g:i A" }}</td>
       <td>{{ exam.get_auditorium_display }}</td>
       <td>
@@ -74,7 +74,7 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "edit_exam" exam.id %}">Редагувати</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "edit_exam" exam.id %}" class="edit-form-link">Редагувати</a></li>
             <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "delete_exam" exam.id %}">Видалити</a></li>
           </ul>
         </div>

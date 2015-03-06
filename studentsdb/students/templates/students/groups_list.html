@@ -39,10 +39,10 @@
   {% for group in group_list %}
     <tr>
       <td>{{ forloop.counter }}</td>
-      <td><a href="{% url "groups_edit" group.id %}" title="редагувати">{{ group.title }}</a></td>
+      <td><a href="{% url "groups_edit" group.id %}" class="edit-form-link" title="редагувати">{{ group.title }}</a></td>
       <td>
       {% if group.leader_id %}
-        <a href="{% url "students_edit" group.leader_id %}" title="регувати">{{ group.leader }}</a>
+        <a href="{% url "students_edit" group.leader_id %}" class="edit-form-link" title="регувати">{{ group.leader }}</a>
       {% else %}
         <strong>Немає</strong>
       {% endif %}
@@ -53,7 +53,7 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "groups_edit" group.id %}">Редагувати</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "groups_edit" group.id %}" class="edit-form-link">Редагувати</a></li>
             <li role="presentation"><a role="menuitem" tabindex="-1" href="/journal">Відвідування</a></li>
             <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "groups_delete" group.id %}">Видалити</a></li>
           </ul>

@@ -49,6 +49,7 @@ function initGroupSelector() {
     });
 }
 
+// ********* DATETIME PICKER *************** //
 function initDateFields() {
     $('input.dateinput').datetimepicker({
         'format': 'YYYY-MM-DD',
@@ -64,9 +65,12 @@ function initExamDateFields() {
         $(this).blur();
     });
 }
+// **************************************** //
 
+// ******************* Student scripts ****************************//
 function initEditStudentPage() {
-    $('a.student-edit-form-link').click(function(event) {
+    // Modal window for adding and editing students, group and exams
+    $('a.edit-form-link, a.add-btn').click(function(event) {
         var link = $(this);
         $.ajax({
             'url': link.attr('href'),
