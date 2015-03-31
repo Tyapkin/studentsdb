@@ -1,22 +1,26 @@
 {% extends "students/base_elements.html" %}
-
+{% load i18n %}
 {% load static from staticfiles %}
-
-{% block meta_title %}Студенти{% endblock %}
-
-{% block title %}База Студентів{% endblock %}
-
-{% block action_btn %}<a href="{% url "students_add" %}" class="btn btn-primary add-btn">Додати студента</a>{% endblock %}
-
+{% block meta_title %}
+  {% trans "Students" %}
+{% endblock %}
+{% block title %}
+  {% trans "Students List" %}
+{% endblock %}
+{% block action_btn %}
+<a href="{% url "students_add" %}" class="btn btn-primary add-btn">
+    {% trans "New student" %}
+</a>
+{% endblock %}
 {% block content %}
 <table class="table table-hover table-striped">
   {% with order_by=request.GET.order_by reverse=request.GET.reverse %}
   <thead>
     <tr>
-      <th>№</th>
-      <th>Фото</th>
+      <th>{% trans "#" %}</th>
+      <th>{% trans "Photo" %}</th>
       <th><a href="{% if not reverse %}?order_by=last_name&amp;reverse=1{% else %}?order_by=last_name{% endif %}">
-            Прізвище
+            {% trans "Last name" %}
             {% if not order_by and not reverse %}&uarr;
             {% elif order_by == 'last_name' and reverse != '1' %}&uarr;
             {% elif order_by == 'last_name' and reverse == '1' %}&darr;
@@ -24,20 +28,20 @@
           </a>
       </th>
       <th><a href="?order_by=first_name{% if order_by == 'first_name' and reverse != '1' %}&amp;reverse=1{% endif %}">
-            Ім’я
+            {% trans "First name" %}
             {% if order_by == 'first_name' and reverse != '1' %}&uarr;
             {% elif order_by == 'first_name' and reverse == '1' %}&darr;
             {% endif %}
           </a>
       </th>
       <th><a href="?order_by=ticket{% if order_by == 'ticket' and reverse != '1' %}&amp;reverse=1{% endif %}">
-            № білету
+            {% trans "Ticket #" %}
             {% if order_by == 'ticket' and reverse != '1' %}&uarr;
             {% elif order_by == 'ticket' and reverse == '1' %}&darr;
             {% endif %}
           </a>
       </th>
-      <th>Дії</th>
+      <th>{% trans "Actions" %}</th>
     </tr>
   </thead>
   {% endwith %}
@@ -52,18 +56,18 @@
         <img width="30" height="30" class="img-circle" src="{% static "img/default_user.png" %}" />
       {% endif %}
       </td>
-      <td><a href="{% url "students_edit" student.id %}" class="edit-form-link" title="редагувати">{{ student.last_name }}</a></td>
-      <td><a href="{% url "students_edit" student.id %}" class="edit-form-link" title="редагувати">{{ student.first_name }}</a></td>
+      <td><a href="{% url "students_edit" student.id %}" class="edit-form-link" title="{% trans "Edit" %}">{{ student.last_name }}</a></td>
+      <td><a href="{% url "students_edit" student.id %}" class="edit-form-link" title="{% trans "Edit" %}">{{ student.first_name }}</a></td>
       <td>{{ student.ticket }}</td>
       <td>
         <div class="dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">Дія
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">{% trans "Action" %}
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "students_edit" student.id %}" class="edit-form-link">Редагувати</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "journal" student.id %}">Відвідування</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "students_delete" student.id %}">Видалити</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "students_edit" student.id %}" class="edit-form-link">{% trans "Edit" %}</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "journal" student.id %}">{% trans "Journal" %}</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "students_delete" student.id %}">{% trans "Delete" %}</a></li>
           </ul>
         </div>
       </td>
@@ -71,11 +75,7 @@
   {% endfor %}
   </tbody>
 </table>
-
 {% with object_list=students %}
-
 {% include "students/pagination.html" %}
-
 {% endwith %}
-
 {% endblock %}
