@@ -1,17 +1,20 @@
 {% extends "students/base.html" %}
-
+{% load i18n %}
 {% load static from staticfiles %}
-
 {% block header %}
   <div class="row" id="header">
     <!-- Section logo -->
-    <div class="col-xs-8"><h1>Сервіс обліку студентів</h1></div>
+    <div class="col-xs-8">
+        <h1>
+            {% trans "Students Accounting Service" %}
+        </h1>
+    </div>
     <!-- End section logo -->
     <!-- Section selector -->
     <div class="col-xs-4" id="group-selector">
-      <strong>Групи:</strong>
+      <strong>{% trans "Group:" %}</strong>
       <select>
-        <option value="">Усі групи</option>
+        <option value="">{% trans "All students" %}</option>
         {% for group in GROUPS %}
           <option value="{{ group.id }}"
                   {% if group.selected %}selected="1"{% endif %}>{{ group.title }}
@@ -23,37 +26,35 @@
     <!-- End section selector -->
   </div>
 {% endblock %}
-
 {% block subheader %}
   <div class="row" id="sub-header">
     <div class="col-xs-12">
       <ul class="nav nav-tabs">
       {% url "home" as root_path %}
         <li role="presentation" {% if request.path == root_path %}class="active"{% endif %}>
-          <a href="{% url "home" %}">Студенти</a>
+          <a href="{% url "home" %}">{% trans "Students" %}</a>
         </li>
       {% url "journal" as journal %}
         <li role="presentation" {% if journal in request.path %}class="active"{% endif %}>
-          <a href="{% url "journal" %}">Відвідування</a>
+          <a href="{% url "journal" %}">{% trans "Journal" %}</a>
         </li>
       {% url "groups" as groups %}
         <li role="presentation" {% if groups in request.path %}class="active"{% endif %}>
-          <a href="{% url "groups" %}">Групи</a>
+          <a href="{% url "groups" %}">{% trans "Groups" %}</a>
         </li>
         </li>
       {% url "exams" as exams %}
         <li role="presentation" {% if exams in request.path %}class="active"{% endif %}>
-          <a href="{% url "exams" %}">Іспити</a>
+          <a href="{% url "exams" %}">{% trans "Examinations" %}</a>
         </li>
         {% url "contact_admin" as contact_admin %}
         <li role="presentation" {% if contact_admin in request.path %}class="active"{% endif %}>
-          <a href="{% url "contact_admin" %}">Контакти</a>
+          <a href="{% url "contact_admin" %}">{% trans "Contact" %}</a>
         </li>
       </ul>
     </div>
   </div>
 {% endblock %}
-
 {% comment "Disable pagination block" %}
 {% block pagination %}
   <nav>
@@ -61,7 +62,7 @@
       <li>
         <a href="#">
           <span aria-hidden="true">&laquo;</span>
-          <span class="sr-only">Previous</span>
+          <span class="sr-only">{% trans "Previous" %}</span>
         </a>
       </li>
       <li><a href="#">1</a></li>
@@ -72,16 +73,15 @@
       <li>
         <a href="#">
           <span aria-hidden="true">&raquo;</span>
-          <span class="sr-only">Next</span>
+          <span class="sr-only">{% trans "Next" %}</span>
         </a>
       </li>
     </ul>
   </nav>
 {% endblock %}
 {% endcomment %}
-
 {% block footer %}
   <div class="row" id="footer">
-    <div class="col-xs-12">&copy; 2014 Сервіс обліку студентів.</div>
+    <div class="col-xs-12">&copy; 2014 {% trans "Students Accounting Service" %}</div>
   </div>
 {% endblock %}

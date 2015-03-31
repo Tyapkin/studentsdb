@@ -1,11 +1,14 @@
+{% load i18n %}
 {% load static from staticfiles %}
 <!DOCTYPE html>
 <html lang="uk">
 
 <head>
   <meta charset="utf-8" />
-  <title>Сервіс Обліку Студентів - {% block meta_title %}{% endblock %}</title>
-  <meta name="description" value="Система Обліку Студентів Навчального Закладу" />
+  <title>
+      {% trans "Students Accounting Service" %} - {% block meta_title %}{% endblock %}
+  </title>
+  <meta name="description" value="{% trans "App to manage students database" %}" />
   <!-- include styles -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="{{ PORTAL_URL }}{% static "css/main.css" %}">
