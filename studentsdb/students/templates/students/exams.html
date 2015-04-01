@@ -1,22 +1,20 @@
 {% extends "students/base_elements.html" %}
-
+{% load i18n %}
 {% load static from staticfiles %}
-
-{% block meta_title %}Іспити{% endblock %}
-
-{% block title %}Іспити{% endblock %}
-
-{% block action_btn %}<a href="{% url "add_exam" %}" class="btn btn-primary add-btn">Додати іспит</a>{% endblock %}
-
+{% block meta_title %}{% trans "Examinations" %}{% endblock %}
+{% block title %}{% trans "Examinations" %}{% endblock %}
+{% block action_btn %}
+<a href="{% url "add_exam" %}" class="btn btn-primary add-btn">{% trans "Add exam" %}</a>
+{% endblock %}
 {% block content %}
 <table class="table table-hover table-striped">
   {% with order_by=request.GET.order_by reverse=request.GET.reverse %}
   <thead>
     <tr>
-      <th>№</th>
+      <th>{% trans "#" %}</th>
       <th>
         <a href="{% if not reverse %}?order_by=exam_name&amp;reverse=1{% else %}?order_by=exam_name{% endif %}">
-          Назва
+          {% trans "Title" %}
             {% if not order_by and not reverse %}&uarr;
           {% elif order_by == 'exam_name' and reverse != '1' %}&uarr;
           {% elif order_by == 'exam_name' and reverse == '1' %}&darr;
@@ -25,7 +23,7 @@
       </th>
       <th>
         <a href="?order_by=teacher{% if order_by == 'teacher' and reverse != '1' %}&amp;reverse=1{% endif %}">
-          Викладач
+          {% trans "Teacher" %}
           {% if order_by == 'teacher' and reverse != '1' %}&uarr;
           {% elif order_by == 'teacher' and reverse == '1' %}&darr;
           {% endif %}
@@ -33,7 +31,7 @@
       </th>
       <th>
         <a href="?order_by=exam_group{% if order_by == 'exam_group' and reverse != '1' %}&amp;reverse=1{% endif %}">
-          Група
+          {% trans "Group" %}
           {% if order_by == 'exam_group' and reverse != '1' %}&uarr;
           {% elif order_by == 'exam_group' and reverse == '1' %}&darr;
           {% endif %}
@@ -41,7 +39,7 @@
       </th>
       <th>
         <a href="?order_by=date_exam{% if order_by == 'date_exam' and reverse != '1' %}&amp;reverse=1{% endif %}">
-          Дата
+          {% trans "Date" %}
           {% if order_by == 'date_exam' and reverse != '1' %}&uarr;
           {% elif order_by == 'date_exam' and reverse == '1' %}&darr;
           {% endif %}
@@ -49,13 +47,13 @@
       </th>
       <th>
         <a href="?order_by=auditorium{% if order_by == 'audotorium' and reverse != '1' %}&amp;reverse=1{% endif %}">
-          Аудиторія
+          {% trans "Auditorium" %}
           {% if order_by == 'auditorium' and reverse != '1' %}&uarr;
           {% elif order_by == 'auditoruim' and reverse == '1' %}&darr;
           {% endif %}
         </a>
       </th>
-      <th>Дії</th>
+      <th>{% trans "Actions" %}</th>
     </tr>
   </thead>
   {% endwith %}
@@ -63,19 +61,19 @@
   {% for exam in exam_list %}
     <tr>
       <td>{{ forloop.counter }}</td>
-      <td><a href="{% url "exam_results" exam.id %}" title="результати">{{ exam.exam_name }}</a></td>
+      <td><a href="{% url "exam_results" exam.id %}" title="{% trans "results" %}">{{ exam.exam_name }}</a></td>
       <td>{{ exam.teacher }}</td>
-      <td><a href="{% url "groups_edit" exam.exam_group_id %}" class="edit-form-link" title="редагувати">{{ exam.exam_group.title }}</a></td>
+      <td><a href="{% url "groups_edit" exam.exam_group_id %}" class="edit-form-link" title="{% trans "edit" %}">{{ exam.exam_group.title }}</a></td>
       <td>{{ exam.date_exam|date:"d/m/Y - g:i A" }}</td>
       <td>{{ exam.get_auditorium_display }}</td>
       <td>
         <div class="dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">Дія
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">{% trans "Action" %}
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "edit_exam" exam.id %}" class="edit-form-link">Редагувати</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "delete_exam" exam.id %}">Видалити</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "edit_exam" exam.id %}" class="edit-form-link">{% trans "Edit" %}</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "delete_exam" exam.id %}">{% trans "Delete" %}</a></li>
           </ul>
         </div>
       </td>
@@ -83,11 +81,7 @@
   {% endfor %}
   </tbody>
 </table>
-
 {% with object_list=exam_list %}
-
 {% include "students/pagination.html" %}
-
 {% endwith %}
-
 {% endblock %}

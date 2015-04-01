@@ -1,22 +1,24 @@
 {% extends "students/base_elements.html" %}
-
+{% load i18n %}
 {% load static from staticfiles %}
-
-{% block meta_title %}Результати іспиту - {{ meta_data.exam_name }}{% endblock %}
-
-{% block title %}Результати іспиту: {{ meta_data.exam_name }}{% endblock %}
-
-{% block action_btn %}<a href="{% url "exams" %}" title="до списку іспитів" class="btn btn-primary add-btn">Назад</a>{% endblock %}
-
+{% block meta_title %}
+{% blocktrans with exam=meta_data.exam_name %}Results exam: {{ exam }}{% endblocktrans %}
+{% endblock %}
+{% block title %}
+{% blocktrans with exam=meta_data.exam_name %}Results exam: {{ exam }}{% endblocktrans %}
+{% endblock %}
+{% block action_btn %}
+<a href="{% url "exams" %}" title="{% trans "To the list of exams" %}" class="btn btn-primary back-btn">{% trans "Back" %}</a>
+{% endblock %}
 {% block content %}
-<h3>Група: {{ meta_data.group_name }}</h3>
+<h3>{% blocktrans with group=meta_data.group_name %}Group: {{ group }}{% endblocktrans %}</h3>
 <table class="table table-hover table-striped">
   <thead>
     <tr>
-      <th>№</th>
-      <th>Студент</th>
-      <th>Оцінка</th>
-      <th>Дії</th>
+      <th>{% trans "#" %}</th>
+      <th>{% trans "Student" %}</th>
+      <th>{% trans "Rating" %}</th>
+      <th>{% trans "Actions" %}</th>
     </tr>
   </thead>
   <tbody>
@@ -27,12 +29,12 @@
       <td>{{ r.get_grade_display }}</td>
       <td>
         <div class="dropdown">
-          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">Дія
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">{% trans "Action" %}
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "edit_exam_result" r.id %}">Редагувати</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "delete_exam_result" r.id %}">Видалити</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "edit_exam_result" r.id %}">{% trans "Edit" %}</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "delete_exam_result" r.id %}">{% trans "Delete" %}</a></li>
           </ul>
         </div>
       </td>

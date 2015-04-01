@@ -1,18 +1,15 @@
 {% extends "students/base_elements.html" %}
-
+{% load i18n %}
 {% load static from staticfiles %}
-
-{% block meta_title %}Видалення екзамену{% endblock %}
-
-{% block title %}Видалення екзамену{% endblock %}
-
+{% block meta_title %}{% trans "Removing exam" %}{% endblock %}
+{% block title %}{% trans "Removing exam" %}{% endblock %}
 {% block content %}
-
 <form action={% url "delete_exam" object.id %} method="post">
 {% csrf_token %}
-<p>Ви дійсно хочете видалити екзамен "{{ object.title }}"?</p>
-<input type="submit" value="Так" name="delete_button"
-       class="btn btn-danger" /><br /><br />
+<p>{% blocktrans with exam=object.exam_name %}Are you sure you want to delete the exam: {{ exam }}?{% endblocktrans %}</p>
+<input type="submit" value="{% trans "Yes" %}" name="delete_button"class="btn btn-danger" />
+<a href="{% url "exams" %}" class="btn btn-info">{% trans "No" %}</a>
+<br /><br />
 </form>
 
 {% endblock %}
