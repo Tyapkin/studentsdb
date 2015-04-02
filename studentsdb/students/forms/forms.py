@@ -1,13 +1,13 @@
-# -*- coding: utf-8 -*-
 import logging
 from django import forms
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
+from django.utils.translation import ugettext as _
 from contact_form.forms import ContactForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset, HTML
-from crispy_forms.bootstrap import FormActions, StrictButton, AppendedText
+from crispy_forms.bootstrap import FormActions, StrictButton
 from captcha.fields import CaptchaField
 
 from ..models.students import Student
@@ -46,7 +46,7 @@ class StudentCreateForm(forms.ModelForm):
         # set layout
         self.helper.layout = Layout(
             Fieldset(
-                u'Заповніть дані про студента',
+                _('Fill in the data about student'),
                 'first_name',
                 'last_name',
                 'middle_name',
@@ -58,9 +58,9 @@ class StudentCreateForm(forms.ModelForm):
             ),
             # add buttons
             FormActions(
-                Submit('add_button', u'Зберегти', css_class='btn-success'),
-                HTML(u'<a class="btn btn-link" href="{% url "home" %}"'
-                     u'role="button">Скасувати</a>')
+                Submit('add_button', _('Save'), css_class='btn-success'),
+                HTML('<a class="btn btn-link" href="{% url "home" %}"'
+                     'role="button">' + _('Cancel') + '</a>')
             ),
         )
 
@@ -68,7 +68,7 @@ class StudentCreateForm(forms.ModelForm):
         cleaned_data = super(StudentCreateForm, self).clean()
 
         if cleaned_data.get('photo') is not None and cleaned_data.get('photo').size > (1024**2) * 2:
-            msg = u'Файл зображення не повинен бути більше ніж 2 Мб'
+            msg = _('The image file should not exceed 2 MB')
             self.add_error('photo', msg)
 
         return cleaned_data
@@ -82,14 +82,14 @@ class StudentUpdateForm(StudentCreateForm):
 
         self.helper.layout = Layout(
             Fieldset(
-                u'Редагування студента {{ object }}',
+                _('Editing student: {{ object }}'),
                 'first_name', 'last_name', 'middle_name', 'birthday',
                 'photo', 'student_group', 'ticket', 'notes'
             ),
             # add buttons
             FormActions(
-                Submit('add_button', u'Зберегти', css_class='btn-success'),
-                StrictButton(u'Скасувати', name='cancel_button', type='submit',
+                Submit('add_button', _('Save'), css_class='btn-success'),
+                StrictButton(_('Cancel'), name='cancel_button', type='submit',
                              css_class='btn-link')
             ),
         )
@@ -120,14 +120,14 @@ class GroupCreateForm(forms.ModelForm):
         # set layout
         self.helper.layout = Layout(
             Fieldset(
-                u'Заповніть дані про групу',
+                _('Fill in the data about group'),
                 'title', 'leader', 'notes'
             ),
             # add buttons
             FormActions(
-                Submit('add_button', u'Зберегти', css_class='btn-success'),
-                HTML(u'<a class="btn btn-link" href="{% url "groups" %}"'
-                     u'role="button">Скасувати</a>')
+                Submit('add_button', _('Save'), css_class='btn-success'),
+                HTML('<a class="btn btn-link" href="{% url "groups" %}"'
+                     'role="button">' + _('Cancel') + '</a>')
             ),
         )
 
@@ -140,13 +140,13 @@ class GroupEditForm(GroupCreateForm):
 
         self.helper.layout = Layout(
             Fieldset(
-                u'Редагування групи {{ object }}',
+                _('Editing group: {{ object }}'),
                 'title', 'leader', 'notes'
             ),
             # add buttons
             FormActions(
-                Submit('add_button', u'Зберегти', css_class='btn-success'),
-                StrictButton(u'Скасувати', name='cancel_button', type='submit',
+                Submit('add_button', _('Save'), css_class='btn-success'),
+                StrictButton(_('Cancel'), name='cancel_button', type='submit',
                              css_class='btn-link')
             ),
         )
@@ -178,15 +178,15 @@ class ExamCreateForm(forms.ModelForm):
         # set layout
         self.helper.layout = Layout(
             Fieldset(
-                u'Заповніть дані про екзамен',
+                _('Fill in the details about the exam'),
                 'exam_name', 'date_exam', 'teacher',
                 'exam_group', 'auditorium',
             ),
             # add buttons
             FormActions(
-                Submit('add_button', u'Зберегти', css_class='btn-success'),
-                HTML(u'<a class="btn btn-link" href="{% url "exams" %}"'
-                     u'role="button">Скасувати</a>')
+                Submit('add_button', _('Save'), css_class='btn-success'),
+                HTML('<a class="btn btn-link" href="{% url "exams" %}"'
+                     'role="button">' + _('Cancel') + '</a>')
             ),
         )
 
@@ -199,14 +199,14 @@ class ExamEditForm(ExamCreateForm):
 
         self.helper.layout = Layout(
             Fieldset(
-                u'Внести зміни до {{ object }}',
+                _('Make changes to: {{ object }}'),
                 'exam_name', 'date_exam', 'teacher',
                 'exam_group', 'auditorium',
             ),
             # add buttons
             FormActions(
-                Submit('add_button', u'Зберегти', css_class='btn-success'),
-                StrictButton(u'Скасувати', name='cancel_button', type='submit',
+                Submit('add_button', _('Save'), css_class='btn-success'),
+                StrictButton(_('Cancel'), name='cancel_button', type='submit',
                              css_class='btn-link')
             ),
         )
@@ -229,7 +229,7 @@ class FeedbackForm(ContactForm):
         self.helper.label_class = 'col-sm-2 control-label'
         self.helper.field_class = 'col-sm-10'
         # form buttons
-        self.helper.add_input(Submit('send_button', u'Надіслати',
+        self.helper.add_input(Submit('send_button', _('Submit'),
                                      css_class='btn-success'))
 
     subject_template_name = 'contact_admin/contact_form_subject.txt'
@@ -237,9 +237,8 @@ class FeedbackForm(ContactForm):
     template_name = 'contact_admin/contact_form.txt'
 
     def save(self, fail_silently=False):
-        error_message = u'Під час відправки листа сталася непередбачувана помилка.' \
-                      u'Будь ласка, спробуйте скористатися формою пізніше.'
-        success_message = u'Повідомлення було успішно надіслано.'
+        error_message = _('When you send a letter to an unexpected error occurred. Please try again later')
+        success_message = _('The message has been successfully sent')
         try:
             send_mail(fail_silently=fail_silently, **self.get_message_dict())
         except Exception:

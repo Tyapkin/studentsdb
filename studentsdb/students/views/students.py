@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
-# from django.views.generic.base import TemplateView
 
 from ..util import paginate, get_current_group
 from ..models.students import Student
@@ -55,8 +54,8 @@ class StudentCreateView(CreateView):
     model = Student
     form_class = StudentCreateForm
     template_name = 'students/students_form.html'
-    success_msg = u'Студент успішно доданий.'
-    cancel_msg = u'Додавання студента скасовано.'
+    success_msg = _('Student successfully added')
+    cancel_msg = _('Adding student canceled')
 
     def get_form_kwargs(self):
         kwargs = super(StudentCreateView, self).get_form_kwargs()
@@ -79,8 +78,8 @@ class StudentUpdateView(UpdateView):
     model = Student
     template_name = 'students/students_form.html'
     form_class = StudentUpdateForm
-    success_msg = u'Студента успішно збережено'
-    cancel_msg = u'Редагування студента скасовано'
+    success_msg = _('The student successfully saved')
+    cancel_msg = _('Saving the student canceled')
 
     def get_success_url(self):
         messages.success(self.request, self.success_msg)
@@ -97,7 +96,7 @@ class StudentUpdateView(UpdateView):
 class StudentDeleteView(DeleteView):
     model = Student
     template_name = 'students/students_confirm_delete.html'
-    success_msg = u'Студента успішно видалено.'
+    success_msg = _('The student successfully removed')
 
     def get_success_url(self):
         messages.success(self.request, self.success_msg)
