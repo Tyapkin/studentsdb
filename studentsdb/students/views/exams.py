@@ -10,6 +10,8 @@ from ..util import paginate, get_current_group
 from ..models.exams import Exam, ExamResults
 from ..forms.forms import ExamEditForm, ExamCreateForm
 
+# TODO: перевести все строки на инглиш
+
 
 class ExamListView(ListView):
     template_name = 'students/exams.html'

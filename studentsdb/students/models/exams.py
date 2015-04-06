@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 
 class Exam(models.Model):
@@ -11,25 +11,25 @@ class Exam(models.Model):
     )
 
     exam_name = models.CharField(max_length=40, blank=False,
-                                 verbose_name=u'Назва іспиту')
+                                 verbose_name=_('Exam title'))
 
     date_exam = models.DateTimeField(blank=False,
-                                     verbose_name=u'Дата проведення іспиту')
+                                     verbose_name=_('The date of the exam'))
 
     teacher = models.CharField(max_length=40, blank=False,
-                               verbose_name=u'Викладач')
+                               verbose_name=_('Teacher'))
 
     exam_group = models.ForeignKey('Group', blank=True, null=True,
                                    on_delete=models.SET_NULL,
-                                   verbose_name=u'Група')
+                                   verbose_name=_('Group'))
 
     auditorium = models.CharField(max_length=2, choices=AUDITORIUM_LIST,
-                                  default=u'a1',
-                                  verbose_name=u'Аудиторія')
+                                  default='a1',
+                                  verbose_name=_('Auditorium'))
 
     class Meta(object):
-        verbose_name = u'Іспит'
-        verbose_name_plural = u'Іспити'
+        verbose_name = _('An exam')
+        verbose_name_plural = _('Examinations')
 
     def __unicode__(self):
         if self.teacher:
@@ -43,23 +43,23 @@ class ExamResults(models.Model):
 
     GRADE_LIST = (
         # Grades 'A, B, C, D, E, F' and default value 'No grade'
-        ('-1', 'No grade'), ('0', 'F'), ('1', 'E'),
+        ('-1', _('No grade')), ('0', 'F'), ('1', 'E'),
         ('2', 'D'), ('3', 'C'), ('4', 'B'), ('5', 'A'),
     )
 
     exam = models.ForeignKey('Exam', blank=False, null=True,
-                             on_delete=models.PROTECT, verbose_name=u'Іспит')
+                             on_delete=models.PROTECT, verbose_name=_('An exam'))
 
     student = models.ForeignKey('Student', blank=True, null=True,
-                                verbose_name=u'Студент')
+                                verbose_name=_('Student'))
 
     grade = models.CharField(max_length=2, choices=GRADE_LIST,
                              default='-1',
-                             verbose_name=u'Оцінка')
+                             verbose_name=_('Grade'))
 
     class Meta(object):
-        verbose_name = u'Результат'
-        verbose_name_plural = u'Результати іспитів'
+        verbose_name = _('Result')
+        verbose_name_plural = _('Exam results')
         unique_together = ('exam', 'student')
 
     def __unicode__(self):
@@ -67,4 +67,4 @@ class ExamResults(models.Model):
         if self.exam.exam_name and self.student:
             return '%s - %s' % (self.exam.exam_name, self.student)
         else:
-            return 'Not found exam or student'
+            return _('Not found exam or student')
