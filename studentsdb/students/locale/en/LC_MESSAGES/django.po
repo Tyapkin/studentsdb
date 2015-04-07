@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-06 11:42+0000\n"
+"POT-Creation-Date: 2015-04-07 07:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,7 +81,8 @@ msgstr ""
 msgid "Teacher"
 msgstr ""
 
-#: models/exams.py:24 models/students.py:24 templates/students/exams.html:34
+#: models/exams.py:24 models/groups.py:18 models/students.py:24
+#: templates/students/exams.html:34
 msgid "Group"
 msgstr ""
 
@@ -102,7 +103,7 @@ msgstr ""
 msgid "No grade"
 msgstr ""
 
-#: models/exams.py:54 models/students.py:32
+#: models/exams.py:54 models/monthjournal.py:14 models/students.py:32
 #: templates/students/exam_results.html:19 templates/students/journal.html:26
 msgid "Student"
 msgstr ""
@@ -121,6 +122,36 @@ msgstr ""
 
 #: models/exams.py:70
 msgid "Not found exam or student"
+msgstr ""
+
+#: models/groups.py:9 templates/students/exams.html:17
+#: templates/students/groups_list.html:17
+msgid "Title"
+msgstr ""
+
+#: models/groups.py:13 templates/students/groups_list.html:26
+msgid "Leader"
+msgstr ""
+
+#: models/groups.py:15 models/students.py:29
+msgid "Notes"
+msgstr ""
+
+#: models/groups.py:19 templates/students/base_elements.html:43
+msgid "Groups"
+msgstr ""
+
+#: models/monthjournal.py:10 templates/students/journal.html:4
+#: templates/students/journal.html.py:5
+msgid "Monthly journal"
+msgstr ""
+
+#: models/monthjournal.py:11
+msgid "Monthly journals"
+msgstr ""
+
+#: models/monthjournal.py:19 templates/students/exams.html:42
+msgid "Date"
 msgstr ""
 
 #: models/students.py:9 templates/students/students_list.html:31
@@ -145,10 +176,6 @@ msgstr ""
 
 #: models/students.py:27
 msgid "Ticket"
-msgstr ""
-
-#: models/students.py:29
-msgid "Notes"
 msgstr ""
 
 #: models/students.py:33 templates/students/base_elements.html:35
@@ -177,10 +204,6 @@ msgstr ""
 #: templates/students/groups_list.html:55
 #: templates/students/students_list.html:69
 msgid "Journal"
-msgstr ""
-
-#: templates/students/base_elements.html:43
-msgid "Groups"
 msgstr ""
 
 #: templates/students/base_elements.html:52
@@ -278,14 +301,6 @@ msgstr ""
 msgid "Add exam"
 msgstr ""
 
-#: templates/students/exams.html:17 templates/students/groups_list.html:17
-msgid "Title"
-msgstr ""
-
-#: templates/students/exams.html:42
-msgid "Date"
-msgstr ""
-
 #: templates/students/exams.html:64
 msgid "results"
 msgstr ""
@@ -317,16 +332,8 @@ msgstr ""
 msgid "New group"
 msgstr ""
 
-#: templates/students/groups_list.html:26
-msgid "Leader"
-msgstr ""
-
 #: templates/students/groups_list.html:45
 msgid "Not found"
-msgstr ""
-
-#: templates/students/journal.html:4 templates/students/journal.html.py:5
-msgid "Monthly journal"
 msgstr ""
 
 #: templates/students/journal.html:10
@@ -374,6 +381,22 @@ msgstr ""
 
 #: templates/students/students_list.html:38
 msgid "Ticket #"
+msgstr ""
+
+#: views/exams.py:59
+msgid "Exam successfully added."
+msgstr ""
+
+#: views/exams.py:70
+msgid "Editing exam canceled."
+msgstr ""
+
+#: views/exams.py:76
+msgid "Changes successfully saved."
+msgstr ""
+
+#: views/exams.py:85
+msgid "Exam successfully removed."
 msgstr ""
 
 #: views/students.py:57

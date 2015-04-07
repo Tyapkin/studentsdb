@@ -1,16 +1,14 @@
-# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.translation import ugettext as _
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
 from ..util import paginate, get_current_group
 from ..models.exams import Exam, ExamResults
 from ..forms.forms import ExamEditForm, ExamCreateForm
-
-# TODO: перевести все строки на инглиш
 
 
 class ExamListView(ListView):
@@ -58,7 +56,7 @@ class ExamCreateView(CreateView):
             return super(ExamCreateView, self).post(request, *args, **kwargs)
 
     def get_success_url(self):
-        messages.success(self.request, u'Екзамен успішно додано.')
+        messages.success(self.request, _('Exam successfully added.'))
         return reverse('exams')
 
 
@@ -69,13 +67,13 @@ class ExamEditView(UpdateView):
 
     def post(self, request, *args, **kwargs):
         if request.POST.get('cancel_button') is not None:
-            messages.warning(self.request, u'Редагування іспиту скасовано.')
+            messages.warning(self.request, _('Editing exam canceled.'))
             return HttpResponseRedirect(reverse('exams'))
         else:
             return super(ExamEditView, self).post(request, *args, **kwargs)
 
     def get_success_url(self):
-        messages.success(self.request, u'Зміни збережено успішно.')
+        messages.success(self.request, _('Changes successfully saved.'))
         return reverse('exams')
 
 
@@ -84,7 +82,7 @@ class ExamDeleteView(DeleteView):
     template_name = 'students/exam_confirm_delete.html'
 
     def get_success_url(self):
-        messages.success(self.request, u'Екзамен успішно видалено.')
+        messages.success(self.request, _('Exam successfully removed.'))
         return reverse('exams')
 
 
@@ -124,6 +122,6 @@ def edit_exam_result(request, id):
 
 """
 ProtectedError
-Разобраться с єкзаменами...
-реализовать удаление екзамена и его результатов.
+deal with exams
+implement deleting and editing exams
 """

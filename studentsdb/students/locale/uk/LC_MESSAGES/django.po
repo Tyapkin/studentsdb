@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Alexander Tyapkin <atyapkin20@gmail.com>, 2015.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-06 11:42+0000\n"
+"POT-Creation-Date: 2015-04-07 07:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alexander Tyapkin <atyapkin20@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -85,7 +85,8 @@ msgstr "Дата іспиту"
 msgid "Teacher"
 msgstr "Викладач"
 
-#: models/exams.py:24 models/students.py:24 templates/students/exams.html:34
+#: models/exams.py:24 models/groups.py:18 models/students.py:24
+#: templates/students/exams.html:34
 msgid "Group"
 msgstr "Група"
 
@@ -106,7 +107,7 @@ msgstr "Іспити"
 msgid "No grade"
 msgstr "Немає балів"
 
-#: models/exams.py:54 models/students.py:32
+#: models/exams.py:54 models/monthjournal.py:14 models/students.py:32
 #: templates/students/exam_results.html:19 templates/students/journal.html:26
 msgid "Student"
 msgstr "Студент"
@@ -126,6 +127,36 @@ msgstr "Результати іспиту"
 #: models/exams.py:70
 msgid "Not found exam or student"
 msgstr "Немає іспитів або студентів"
+
+#: models/groups.py:9 templates/students/exams.html:17
+#: templates/students/groups_list.html:17
+msgid "Title"
+msgstr "Назва"
+
+#: models/groups.py:13 templates/students/groups_list.html:26
+msgid "Leader"
+msgstr "Староста"
+
+#: models/groups.py:15 models/students.py:29
+msgid "Notes"
+msgstr "Нотатки"
+
+#: models/groups.py:19 templates/students/base_elements.html:43
+msgid "Groups"
+msgstr "Групи"
+
+#: models/monthjournal.py:10 templates/students/journal.html:4
+#: templates/students/journal.html.py:5
+msgid "Monthly journal"
+msgstr "Облік відвідувань"
+
+#: models/monthjournal.py:11
+msgid "Monthly journals"
+msgstr "Облік відвідувань"
+
+#: models/monthjournal.py:19 templates/students/exams.html:42
+msgid "Date"
+msgstr "Дата"
 
 #: models/students.py:9 templates/students/students_list.html:31
 msgid "First name"
@@ -150,10 +181,6 @@ msgstr "Фото"
 #: models/students.py:27
 msgid "Ticket"
 msgstr "Білет"
-
-#: models/students.py:29
-msgid "Notes"
-msgstr "Нотатки"
 
 #: models/students.py:33 templates/students/base_elements.html:35
 #: templates/students/students_list.html:5
@@ -182,10 +209,6 @@ msgstr "Всі студенти"
 #: templates/students/students_list.html:69
 msgid "Journal"
 msgstr "Відвідування"
-
-#: templates/students/base_elements.html:43
-msgid "Groups"
-msgstr "Групи"
 
 #: templates/students/base_elements.html:52
 msgid "Contact"
@@ -282,14 +305,6 @@ msgstr "Видалити"
 msgid "Add exam"
 msgstr "Додати іспит"
 
-#: templates/students/exams.html:17 templates/students/groups_list.html:17
-msgid "Title"
-msgstr "Назва"
-
-#: templates/students/exams.html:42
-msgid "Date"
-msgstr "Дата"
-
 #: templates/students/exams.html:64
 msgid "results"
 msgstr "результати"
@@ -321,17 +336,9 @@ msgstr "Список груп"
 msgid "New group"
 msgstr "Додати групу"
 
-#: templates/students/groups_list.html:26
-msgid "Leader"
-msgstr "Староста"
-
 #: templates/students/groups_list.html:45
 msgid "Not found"
 msgstr "Немає"
-
-#: templates/students/journal.html:4 templates/students/journal.html.py:5
-msgid "Monthly journal"
-msgstr "Облік відвідувань"
 
 #: templates/students/journal.html:10
 #, python-format
@@ -381,6 +388,22 @@ msgstr "Новий студент"
 #: templates/students/students_list.html:38
 msgid "Ticket #"
 msgstr "№ білету"
+
+#: views/exams.py:59
+msgid "Exam successfully added."
+msgstr "Іспит успішно доданий."
+
+#: views/exams.py:70
+msgid "Editing exam canceled."
+msgstr "Редагування іспиту скасовано."
+
+#: views/exams.py:76
+msgid "Changes successfully saved."
+msgstr "Зміни успішно збережено."
+
+#: views/exams.py:85
+msgid "Exam successfully removed."
+msgstr "Іспит успішно видалений."
 
 #: views/students.py:57
 msgid "Student successfully added"
