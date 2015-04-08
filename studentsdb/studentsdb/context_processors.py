@@ -1,5 +1,5 @@
-from django.utils.translation import ugettext as _
 from django.utils.encoding import smart_unicode
+from django.utils.translation import ugettext as _
 
 
 def students_proc(request):
@@ -9,22 +9,24 @@ def students_proc(request):
 
     adding = None
     editing = None
+    trans_strings = (
+        (_('Add student'), _('Editing student'),),
+        (_('Add a group'), _('Editing group'),),
+        (_('Add an exam'), _('Editing exam'),),
+    )
 
     if '/students/' in request.path and '/add/' in request.path or '/students/'\
             in request.path and '/edit/' in request.path:
-        adding = _('Add student')
-        editing = _('Editing student')
-        print 'returned students ==>> ', request.path
+        adding = trans_strings[0][0]
+        editing = trans_strings[0][1]
     elif '/groups/' in request.path and '/add/' in request.path or '/groups/'\
             in request.path and '/edit/' in request.path:
-        adding = _('Add a group')
-        editing = _('Editing group')
-        print 'returned groups ==>> ', request.path
+        adding = trans_strings[1][0]
+        editing = trans_strings[1][1]
     elif '/exams/' in request.path and '/add/' in request.path or '/exams/'\
             in request.path and '/edit/' in request.path:
-        adding = _('Add an exam')
-        editing = _('Editing exam')
-        print 'returned exams ==>> ', request.path
+        adding = trans_strings[2][0]
+        editing = trans_strings[2][1]
 
     return {
         'PORTAL_URL': absolute_uri,

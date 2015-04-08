@@ -11,6 +11,10 @@ from students.views.exams import ExamCreateView, ExamEditView, ExamDeleteView, \
     ExamListView
 from students.views.journal import JournalView
 
+js_info_dict = {
+    'packages': ('students',),
+}
+
 urlpatterns = patterns(
     '',
     # URL pattern for students
@@ -47,6 +51,8 @@ urlpatterns = patterns(
     url(r'^contact_admin/$', FeedbackView.as_view(), name='contact_admin'),
     url(r'^success_sending_email/$', SuccessRedirectView.as_view(),
         name='success_sending_email'),
+    # JS localization url
+    url(r'^jsi18n\.js$', 'django.views.i18n.javascript_catalog', js_info_dict),
     # simple captcha
     url(r'^captcha/', include('captcha.urls')),
     # admin url
