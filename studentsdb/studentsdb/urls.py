@@ -4,7 +4,7 @@ from django.contrib import admin
 
 from students.views.contact_admin import FeedbackView, SuccessRedirectView
 from students.views.students import StudentCreateView, StudentUpdateView,\
-    StudentDeleteView, StudentListView
+    StudentDeleteView, StudentListView, LanguageSelect
 from students.views.groups import GroupCreateView, GroupDeleteView, \
     GroupUpdateView, GroupListView
 from students.views.exams import ExamCreateView, ExamEditView, ExamDeleteView, \
@@ -53,6 +53,8 @@ urlpatterns = patterns(
         name='success_sending_email'),
     # JS localization url
     url(r'^jsi18n\.js$', 'django.views.i18n.javascript_catalog', js_info_dict),
+    # Language trigger url
+    url(r'^lang/(?P<code>[a-z]{2})/$', LanguageSelect.as_view(), name='lang'),
     # simple captcha
     url(r'^captcha/', include('captcha.urls')),
     # admin url

@@ -1,7 +1,10 @@
+from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.utils import translation
 from django.utils.translation import ugettext as _
+from django.views.generic import View
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
 from ..util import paginate, get_current_group
@@ -101,3 +104,17 @@ class StudentDeleteView(DeleteView):
     def get_success_url(self):
         messages.success(self.request, self.success_msg)
         return reverse('home')
+
+
+class LanguageSelect(View):
+
+    def get(self, request, code, *args, **kwargs):
+        next = request.META.get('HTTP_REFERER', '/')
+        response = HttpResponseRedirect(next)
+        if code and translation.check_for_language(code):
+            if hasattr(request, 'session'):
+                request.session['django_language'] = code
+            else:
+                response.set_cookie(settings.LANGUAGE_COOKIE_NAME, code)
+            translation.activate(code)
+        return response

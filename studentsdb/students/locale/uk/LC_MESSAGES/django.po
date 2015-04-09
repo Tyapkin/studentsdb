@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-07 08:36+0000\n"
+"POT-Creation-Date: 2015-04-09 13:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Alexander Tyapkin <atyapkin20@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -98,7 +98,7 @@ msgstr "Аудиторія"
 msgid "An exam"
 msgstr "Іспит"
 
-#: models/exams.py:32 templates/students/base_elements.html:48
+#: models/exams.py:32 templates/students/base_elements.html:58
 #: templates/students/exams.html:4 templates/students/exams.html.py:5
 msgid "Examinations"
 msgstr "Іспити"
@@ -141,7 +141,7 @@ msgstr "Староста"
 msgid "Notes"
 msgstr "Нотатки"
 
-#: models/groups.py:19 templates/students/base_elements.html:43
+#: models/groups.py:19 templates/students/base_elements.html:53
 msgid "Groups"
 msgstr "Групи"
 
@@ -182,13 +182,13 @@ msgstr "Фото"
 msgid "Ticket"
 msgstr "Білет"
 
-#: models/students.py:33 templates/students/base_elements.html:35
+#: models/students.py:33 templates/students/base_elements.html:45
 #: templates/students/students_list.html:5
 msgid "Students"
 msgstr "Студенти"
 
-#: templates/students/base.html:9 templates/students/base_elements.html:9
-#: templates/students/base_elements.html:85
+#: templates/students/base.html:9 templates/students/base_elements.html:19
+#: templates/students/base_elements.html:95
 msgid "Students Accounting Service"
 msgstr "Сервіс Обліку Студентів"
 
@@ -196,29 +196,34 @@ msgstr "Сервіс Обліку Студентів"
 msgid "App to manage students database"
 msgstr "Додаток для управління базою даних студентів"
 
-#: templates/students/base_elements.html:15
+#: templates/students/base_elements.html:8
+#: templates/students/base_elements.html:10
+msgid "Language:"
+msgstr "Мова:"
+
+#: templates/students/base_elements.html:25
 msgid "Group:"
 msgstr "Група:"
 
-#: templates/students/base_elements.html:17
+#: templates/students/base_elements.html:27
 msgid "All students"
 msgstr "Всі студенти"
 
-#: templates/students/base_elements.html:39
+#: templates/students/base_elements.html:49
 #: templates/students/groups_list.html:55
 #: templates/students/students_list.html:69
 msgid "Journal"
 msgstr "Відвідування"
 
-#: templates/students/base_elements.html:52
+#: templates/students/base_elements.html:62
 msgid "Contact"
 msgstr "Контакти"
 
-#: templates/students/base_elements.html:65
+#: templates/students/base_elements.html:75
 msgid "Previous"
 msgstr "Попередня"
 
-#: templates/students/base_elements.html:76
+#: templates/students/base_elements.html:86
 msgid "Next"
 msgstr "Наступна"
 
@@ -405,22 +410,22 @@ msgstr "Зміни успішно збережено."
 msgid "Exam successfully removed."
 msgstr "Іспит успішно видалений."
 
-#: views/students.py:57
+#: views/students.py:60
 msgid "Student successfully added"
 msgstr "Студент успішно доданий"
 
-#: views/students.py:58
+#: views/students.py:61
 msgid "Adding student canceled"
 msgstr "Додавання студента скасовано"
 
-#: views/students.py:81
+#: views/students.py:84
 msgid "The student successfully saved"
 msgstr "Студента успішно збережено"
 
-#: views/students.py:82
+#: views/students.py:85
 msgid "Saving the student canceled"
 msgstr "Збереження студента скасовано"
 
-#: views/students.py:99
+#: views/students.py:102
 msgid "The student successfully removed"
 msgstr "Студента успішно видалено"
