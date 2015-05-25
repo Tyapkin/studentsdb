@@ -4,9 +4,9 @@
 {% block header %}
   <div class="row" id="user-menu">
       <div class="col-xs-4">
-          {% if LANGUAGE_CODE|lower == "en" %}
+          {% if LANGUAGE_CODE|lower|slice:":2" == "en" %}
           <p>{% trans "Language:" %} <a href="{% url 'lang' 'uk' %}">UA</a></p>
-          {% elif LANGUAGE_CODE|lower == "uk" %}
+          {% elif LANGUAGE_CODE|lower|slice:":2" == "uk" %}
           <p>{% trans "Language:" %} <a href="{% url 'lang' 'en' %}">EN</a></p>
           {% endif %}
       </div>
