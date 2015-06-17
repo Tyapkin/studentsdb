@@ -5,9 +5,9 @@
   <div class="row" id="user-menu">
       <div class="col-xs-4">
           {% if LANGUAGE_CODE|lower|slice:":2" == "en" %}
-          <p>{% trans "Language:" %} <a href="{% url 'lang' 'uk' %}">UA</a></p>
+          <p><a href="{% url 'lang' 'uk' %}">UA</a></p>
           {% elif LANGUAGE_CODE|lower|slice:":2" == "uk" %}
-          <p>{% trans "Language:" %} <a href="{% url 'lang' 'en' %}">EN</a></p>
+          <p><a href="{% url 'lang' 'en' %}">EN</a></p>
           {% endif %}
       </div>
       <div class="col-xs-8"><p class="text-right"><a href="#">Sign In</a> | <a href="#">Sign Up</a></p></div>

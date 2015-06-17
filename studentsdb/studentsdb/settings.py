@@ -5,6 +5,7 @@ from django.conf import global_settings
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+gettext_noop = lambda s: s
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -73,6 +74,10 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
 LANGUAGE_CODE = 'uk'
+LANGUAGES = (
+    ('uk', gettext_noop('Ukrainian')),
+    ('en', gettext_noop('English')),
+)
 
 TIME_ZONE = 'UTC'
 
