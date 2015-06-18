@@ -1,12 +1,15 @@
 # coding=utf-8
 from django.contrib import admin
-from django.core.urlresolvers import reverse
 from django.forms import ValidationError, ModelForm
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.forms import ReadOnlyPasswordHashField, UserChangeForm
+from django.utils.translation import ugettext_lazy as _
 
 from .models.students import Student
 from .models.groups import Group
 from .models.exams import Exam, ExamResults
 from .models.monthjournal import MonthJournal
+from .models.teachers import Teacher
 
 
 class StudentFormAdmin(ModelForm):
@@ -74,9 +77,6 @@ class GroupAdmin(admin.ModelAdmin):
     search_fields = ['title', 'leader', 'notes']
     form = GroupFormAdmin
 
-    # def get_view_on_site_url(self, obj=None):
-    #    return reverse('groups_edit', kwargs={'pk': obj.pk})
-
 
 @admin.register(Exam)
 class ExamAdmin(admin.ModelAdmin):
@@ -91,3 +91,33 @@ class ExamResultsAdmin(admin.ModelAdmin):
 @admin.register(MonthJournal)
 class MonthJournalAdmin(admin.ModelAdmin):
     pass
+
+
+class TeacherAdminForm(UserChangeForm):
+    password = ReadOnlyPasswordHashField(
+        label=_('Password'),
+        help_text=_("Raw passwords are not stored, so there is no way to see "
+                    "this user's password, but you can change the password "
+                    "using <a href=\"password/\">this form</a>."))
+
+    def clean_password(self):
+        return self.initial['password']
+
+    class Meta(object):
+        model = Teacher
+
+
+@admin.register(Teacher)
+class TeacherAdmin(UserAdmin):
+    form = TeacherAdminForm
+    list_display = ('username', 'last_name', 'first_name',
+                    'email', 'last_login', 'is_active')
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name',
+                                         'middle_name', 'degree', 'email',
+                                         'phone_num', 'address', 'photo',)}),
+        # (_('Permissions'), {'fields': ('is_active', 'is_staff', 'user_permissions')}),
+        # (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+        (_('Groups'), {'fields': ('groups',)}),
+    )
